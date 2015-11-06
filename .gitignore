@@ -1,5 +1,4 @@
-TheAbyss/xcode/DerivedData/**
-TheAbyss/xcode/build/**
+source/ta.jit.kinect2/DerivedData/**
 *.pbxuser
 *.mode1v3
 *.mode2v3
