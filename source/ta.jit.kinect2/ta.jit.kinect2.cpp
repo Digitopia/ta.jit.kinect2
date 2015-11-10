@@ -14,42 +14,42 @@
 
 
 // Our Jitter object instance data
-typedef struct _jit_simple {
+typedef struct _ta_jit_kinect2 {
 	t_object	ob;
 	double		gain;	// our attribute (multiplied against each cell in the matrix)
-} t_jit_simple;
+} t_ta_jit_kinect2;
 
 
 // prototypes
 BEGIN_USING_C_LINKAGE
-t_jit_err		jit_simple_init				(void);
-t_jit_simple	*jit_simple_new				(void);
-void			jit_simple_free				(t_jit_simple *x);
-t_jit_err		jit_simple_matrix_calc		(t_jit_simple *x, void *inputs, void *outputs);
-void			jit_simple_calculate_ndim	(t_jit_simple *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
+t_jit_err		ta_jit_kinect2_init				(void);
+t_ta_jit_kinect2	*ta_jit_kinect2_new				(void);
+void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
+t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
+void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
 END_USING_C_LINKAGE
 
 
 // globals
-static void *s_jit_simple_class = NULL;
+static void *s_ta_jit_kinect2_class = NULL;
 
 
 /************************************************************************************/
 
-t_jit_err jit_simple_init(void)
+t_jit_err ta_jit_kinect2_init(void)
 {
 	long			attrflags = JIT_ATTR_GET_DEFER_LOW | JIT_ATTR_SET_USURP_LOW;
 	t_jit_object	*attr;
 	t_jit_object	*mop;
 
-	s_jit_simple_class = jit_class_new("jit_simple", (method)jit_simple_new, (method)jit_simple_free, sizeof(t_jit_simple), 0);
+	s_ta_jit_kinect2_class = jit_class_new("ta_jit_kinect2", (method)ta_jit_kinect2_new, (method)ta_jit_kinect2_free, sizeof(t_ta_jit_kinect2), 0);
 
 	// add matrix operator (mop)
 	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 1, 1); // args are  num inputs and num outputs
-	jit_class_addadornment(s_jit_simple_class, mop);
+	jit_class_addadornment(s_ta_jit_kinect2_class, mop);
 
 	// add method(s)
-	jit_class_addmethod(s_jit_simple_class, (method)jit_simple_matrix_calc, "matrix_calc", A_CANT, 0);
+	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
 
 	// add attribute(s)
 	attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
@@ -57,11 +57,11 @@ t_jit_err jit_simple_init(void)
 										  _jit_sym_float64,
 										  attrflags,
 										  (method)NULL, (method)NULL,
-										  calcoffset(t_jit_simple, gain));
-	jit_class_addattr(s_jit_simple_class, attr);
+										  calcoffset(t_ta_jit_kinect2, gain));
+	jit_class_addattr(s_ta_jit_kinect2_class, attr);
 
 	// finalize class
-	jit_class_register(s_jit_simple_class);
+	jit_class_register(s_ta_jit_kinect2_class);
 	return JIT_ERR_NONE;
 }
 
@@ -69,11 +69,11 @@ t_jit_err jit_simple_init(void)
 /************************************************************************************/
 // Object Life Cycle
 
-t_jit_simple *jit_simple_new(void)
+t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
 {
-	t_jit_simple	*x = NULL;
+	t_ta_jit_kinect2	*x = NULL;
 
-	x = (t_jit_simple *)jit_object_alloc(s_jit_simple_class);
+	x = (t_ta_jit_kinect2 *)jit_object_alloc(s_ta_jit_kinect2_class);
 	if (x) {
 		x->gain = 0.0;
 	}
@@ -81,7 +81,7 @@ t_jit_simple *jit_simple_new(void)
 }
 
 
-void jit_simple_free(t_jit_simple *x)
+void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 {
 	;	// nothing to free for our simple object
 }
@@ -90,7 +90,7 @@ void jit_simple_free(t_jit_simple *x)
 /************************************************************************************/
 // Methods bound to input/inlets
 
-t_jit_err jit_simple_matrix_calc(t_jit_simple *x, void *inputs, void *outputs)
+t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
 {
 	t_jit_err			err = JIT_ERR_NONE;
 	long				in_savelock;
@@ -145,7 +145,7 @@ t_jit_err jit_simple_matrix_calc(t_jit_simple *x, void *inputs, void *outputs)
 			}
 		}
 
-		jit_parallel_ndim_simplecalc2((method)jit_simple_calculate_ndim,
+		jit_parallel_ndim_simplecalc2((method)ta_jit_kinect2_calculate_ndim,
 									  x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
 									  0 /* flags1 */, 0 /* flags2 */);
 
@@ -163,7 +163,7 @@ out:
 // We are using a C++ template to process a vector of the matrix for any of the given types.
 // Thus, we don't need to duplicate the code for each datatype.
 template<typename T>
-void jit_simple_vector(t_jit_simple *x, long n, t_jit_op_info *in, t_jit_op_info *out)
+void ta_jit_kinect2_vector(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in, t_jit_op_info *out)
 {
 	double	gain = x->gain;
 	T		*ip;
@@ -201,7 +201,7 @@ void jit_simple_vector(t_jit_simple *x, long n, t_jit_op_info *in, t_jit_op_info
 // further reducing code duplication in jit_simple_calculate_ndim().
 // The calls into these templates should be inlined by the compiler, eliminating concern about any added function call overhead.
 template<typename T>
-void jit_simple_loop(t_jit_simple *x, long n, t_jit_op_info *in_opinfo, t_jit_op_info *out_opinfo, t_jit_matrix_info *in_minfo, t_jit_matrix_info *out_minfo, char *bip, char *bop, long *dim, long planecount, long datasize)
+void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, t_jit_op_info *out_opinfo, t_jit_matrix_info *in_minfo, t_jit_matrix_info *out_minfo, char *bip, char *bop, long *dim, long planecount, long datasize)
 {
 	long	i;
 	long	j;
@@ -210,13 +210,13 @@ void jit_simple_loop(t_jit_simple *x, long n, t_jit_op_info *in_opinfo, t_jit_op
 		for (j=0; j<planecount; j++) {
 			in_opinfo->p  = bip + i * in_minfo->dimstride[1]  + (j % in_minfo->planecount) * datasize;
 			out_opinfo->p = bop + i * out_minfo->dimstride[1] + (j % out_minfo->planecount) * datasize;
-			jit_simple_vector<T>(x, n, in_opinfo, out_opinfo);
+			ta_jit_kinect2_vector<T>(x, n, in_opinfo, out_opinfo);
 		}
 	}
 }
 
 
-void jit_simple_calculate_ndim(t_jit_simple *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop)
+void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop)
 {
 	long			i;
 	long			n;
@@ -247,19 +247,19 @@ void jit_simple_calculate_ndim(t_jit_simple *x, long dimcount, long *dim, long p
 		}
 
 		if (in_minfo->type == _jit_sym_char)
-			jit_simple_loop<uchar>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 1);
+			ta_jit_kinect2_loop<uchar>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 1);
 		else if (in_minfo->type == _jit_sym_long)
-			jit_simple_loop<long>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 4);
+			ta_jit_kinect2_loop<long>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 4);
 		else if (in_minfo->type == _jit_sym_float32)
-			jit_simple_loop<float>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 4);
+			ta_jit_kinect2_loop<float>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 4);
 		else if (in_minfo->type == _jit_sym_float64)
-			jit_simple_loop<double>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 8);
+			ta_jit_kinect2_loop<double>(x, n, &in_opinfo, &out_opinfo, in_minfo, out_minfo, bip, bop, dim, planecount, 8);
 		break;
 	default:
 		for	(i=0; i<dim[dimcount-1]; i++) {
 			ip = bip + i * in_minfo->dimstride[dimcount-1];
 			op = bop + i * out_minfo->dimstride[dimcount-1];
-			jit_simple_calculate_ndim(x, dimcount-1, dim, planecount, in_minfo, ip, out_minfo, op);
+			ta_jit_kinect2_calculate_ndim(x, dimcount-1, dim, planecount, in_minfo, ip, out_minfo, op);
 		}
 	}
 }
