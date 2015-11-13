@@ -1,16 +1,23 @@
 /**
 	 @file
-	 jit.simple - simple example of a Jitter external
-	 + multiplies an incoming matrix by a constant
-	 + demonstrates some oft-requested example code for using C++ in an extern
-
-	 @ingroup	examples
-
-	 Copyright 2009 - Cycling '74
-	 Timothy Place, tim@cycling74.com
-*/
+    ta.jit.kinect2 - reads rgb and depth matrix from Kinect v2
+    using libfreenect2
+ 
+    @ingroup	examples
+	@see		ta.jit.kinect2
+ 
+	Copyright 2015 - Tiago Ângelo aka p1nh0 (p1nh0.c0d1ng@gmail.com)*/
 
 #include "jit.common.h"
+
+// Libfreenect2 includes
+#include <iostream>
+#include <signal.h>
+#include <libfreenect2.hpp>
+#include <frame_listener_impl.h>
+#include <registration.h>
+#include <packet_pipeline.h>
+#include <logger.h>
 
 
 // Our Jitter object instance data
