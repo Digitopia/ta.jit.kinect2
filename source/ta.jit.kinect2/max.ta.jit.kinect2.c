@@ -26,6 +26,7 @@ BEGIN_USING_C_LINKAGE
 t_jit_err	ta_jit_kinect2_init(void);
 void		*max_ta_jit_kinect2_new(t_symbol *s, long argc, t_atom *argv);
 void		max_ta_jit_kinect2_free(t_max_ta_jit_kinect2 *x);
+void        max_ta_jit_kinect2_assist(t_max_ta_jit_kinect2 *x, void *b, long msg, long arg, char *s); // TA: declare inlet/outlet assist method
 //void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x); // TA: declare bang method
 END_USING_C_LINKAGE
 
@@ -48,8 +49,9 @@ void ext_main(void *r)
 	max_jit_class_mop_wrap(max_class, jit_class, 0);			// attrs & methods for name, type, dim, planecount, bang, outputmatrix, etc
 	max_jit_class_wrap_standard(max_class, jit_class, 0);		// attrs & methods for getattributes, dumpout, maxjitclassaddmethods, etc
 
-	class_addmethod(max_class, (method)max_jit_mop_assist, "assist", A_CANT, 0);	// standard matrix-operator (mop) assist fn
-//    class_addmethod(max_class, (method)max_ta_jit_kinect2_bang, "bang",  0); // TA: add bang method
+	class_addmethod(max_class, (method)max_ta_jit_kinect2_assist, "assist", A_CANT, 0);	// TA: assist method
+    
+    //    class_addmethod(max_class, (method)max_ta_jit_kinect2_bang, "bang",  0); // TA: add bang method
     
 
 	class_register(CLASS_BOX, max_class);
@@ -94,4 +96,24 @@ void max_ta_jit_kinect2_free(t_max_ta_jit_kinect2 *x)
 //void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x){
 //    post("hello");
 //}
+
+//TA: assist method
+void max_ta_jit_kinect2_assist(t_max_ta_jit_kinect2 *x, void *b, long msg, long arg, char *s){
+    if (msg == ASSIST_INLET) { // inlet assist
+        // add inlet assist here
+    }
+    else if(msg == ASSIST_OUTLET){ // outlet assist
+        switch (arg) {
+            case 0:
+                sprintf(s, "(matrix) depth");
+                break;
+            case 1:
+                sprintf(s, "(matrix) rgb");
+                break;
+            case 2:
+                sprintf(s, "dumpout");
+                break;
+        }
+    }
+}
 
