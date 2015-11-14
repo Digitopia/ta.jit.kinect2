@@ -26,6 +26,7 @@ BEGIN_USING_C_LINKAGE
 t_jit_err	ta_jit_kinect2_init(void);
 void		*max_ta_jit_kinect2_new(t_symbol *s, long argc, t_atom *argv);
 void		max_ta_jit_kinect2_free(t_max_ta_jit_kinect2 *x);
+//void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x); // TA: declare bang method
 END_USING_C_LINKAGE
 
 // globals
@@ -48,6 +49,8 @@ void ext_main(void *r)
 	max_jit_class_wrap_standard(max_class, jit_class, 0);		// attrs & methods for getattributes, dumpout, maxjitclassaddmethods, etc
 
 	class_addmethod(max_class, (method)max_jit_mop_assist, "assist", A_CANT, 0);	// standard matrix-operator (mop) assist fn
+//    class_addmethod(max_class, (method)max_ta_jit_kinect2_bang, "bang",  0); // TA: add bang method
+    
 
 	class_register(CLASS_BOX, max_class);
 	max_ta_jit_kinect2_class = max_class;
@@ -68,6 +71,7 @@ void *max_ta_jit_kinect2_new(t_symbol *s, long argc, t_atom *argv)
 		if (o) {
 			max_jit_mop_setup_simple(x, o, argc, argv);
 			max_jit_attr_args(x, argc, argv);
+            
 		}
 		else {
 			jit_object_error((t_object *)x, "ta.jit.kinect2: could not allocate object");
@@ -85,4 +89,9 @@ void max_ta_jit_kinect2_free(t_max_ta_jit_kinect2 *x)
 	jit_object_free(max_jit_obex_jitob_get(x));
 	max_jit_object_free(x);
 }
+
+// TA: bang method
+//void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x){
+//    post("hello");
+//}
 

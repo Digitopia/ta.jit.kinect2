@@ -23,7 +23,7 @@
 // Our Jitter object instance data
 typedef struct _ta_jit_kinect2 {
 	t_object	ob;
-	double		gain;	// our attribute (multiplied against each cell in the matrix)
+    double		gain;	// our attribute (multiplied against each cell in the matrix)
 } t_ta_jit_kinect2;
 
 
@@ -37,12 +37,12 @@ void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsi
 END_USING_C_LINKAGE
 
 
-// globals
+// globals TA: GLOBAL CLASS VARIABLE (class information resides here)
 static void *s_ta_jit_kinect2_class = NULL;
 
 
 /************************************************************************************/
-
+// INIT
 t_jit_err ta_jit_kinect2_init(void)
 {
 	long			attrflags = JIT_ATTR_GET_DEFER_LOW | JIT_ATTR_SET_USURP_LOW;
@@ -52,12 +52,12 @@ t_jit_err ta_jit_kinect2_init(void)
 	s_ta_jit_kinect2_class = jit_class_new("ta_jit_kinect2", (method)ta_jit_kinect2_new, (method)ta_jit_kinect2_free, sizeof(t_ta_jit_kinect2), 0);
 
 	// add matrix operator (mop)
-	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 1, 1); // args are  num inputs and num outputs
+	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 1, 2); // args are  num inputs and num outputs | TA: added a second outlet, thus having depth, rgb and dumpout outlets
 	jit_class_addadornment(s_ta_jit_kinect2_class, mop);
 
 	// add method(s)
 	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
-
+    
 	// add attribute(s)
 	attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
 										  "gain",
@@ -67,35 +67,37 @@ t_jit_err ta_jit_kinect2_init(void)
 										  calcoffset(t_ta_jit_kinect2, gain));
 	jit_class_addattr(s_ta_jit_kinect2_class, attr);
 
-	// finalize class
+	// finalize class (REGISTER)
 	jit_class_register(s_ta_jit_kinect2_class);
 	return JIT_ERR_NONE;
 }
 
 
 /************************************************************************************/
-// Object Life Cycle
+// Object Life Cycle : CONSTRUCTOR
 
 t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
 {
 	t_ta_jit_kinect2	*x = NULL;
-
+    // TA: ALLOCATE OBJECT STRUCT (only initializes object struct)
 	x = (t_ta_jit_kinect2 *)jit_object_alloc(s_ta_jit_kinect2_class);
-	if (x) {
+    // TA: initialize other data or structs
+    if (x) {
 		x->gain = 0.0;
 	}
 	return x;
 }
 
-
+// DESTRUCTOR
 void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 {
-	;	// nothing to free for our simple object
+	;	// TA: close kinect device and free allocated resources (except for the object struct)
 }
 
 
 /************************************************************************************/
 // Methods bound to input/inlets
+
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
 {
