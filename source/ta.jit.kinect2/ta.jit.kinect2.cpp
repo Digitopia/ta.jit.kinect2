@@ -34,6 +34,7 @@ t_ta_jit_kinect2	*ta_jit_kinect2_new				(void);
 void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
 t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
 void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
+void ta_jit_kinect2_open (t_ta_jit_kinect2 *x); // TA: declare "open" method
 END_USING_C_LINKAGE
 
 
@@ -57,6 +58,7 @@ t_jit_err ta_jit_kinect2_init(void)
 
 	// add method(s)
 	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
+    jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_open, "open", A_SYM, 0);
     
 	// add attribute(s)
 	attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
@@ -98,6 +100,10 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 /************************************************************************************/
 // Methods bound to input/inlets
 
+//TA: open kinect device
+void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
+    post("hello"); // TA: insert "open" method here
+}
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
 {
