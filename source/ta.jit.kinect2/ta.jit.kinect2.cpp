@@ -17,7 +17,7 @@
 #include <frame_listener_impl.h>
 #include <registration.h>
 #include <packet_pipeline.h>
-#include <logger.h>
+//#include <logger.h>
 
 
 // Our Jitter object instance data
