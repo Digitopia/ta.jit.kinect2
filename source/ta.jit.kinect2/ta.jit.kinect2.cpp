@@ -61,7 +61,7 @@ t_jit_err ta_jit_kinect2_init(void)
 
 	// add method(s)
 	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
-    jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_open, "open", A_SYM, 0);
+    jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_open, "open", 0);
     
 	// add attribute(s)
 	attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
@@ -109,9 +109,9 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     post("reaching for Kinect2 device"); // TA: insert "open" method here
     
-    if (x->freenect2->enumerateDevices() == 0) {
-        post("no device connected!");
-    }
+//    if (x->freenect2->enumerateDevices() == 0) {
+//        post("no device connected!");
+//    }
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
