@@ -24,6 +24,9 @@
 typedef struct _ta_jit_kinect2 {
 	t_object	ob;
     long		depth_processor;	// TA: depth_processor attribute -> 0=CPU, 1=OpenGL, 2=OpenCL
+    libfreenect2::Freenect2 *freenect2; // TA: declare freenect2 capabilities?
+    libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
+    libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
 } t_ta_jit_kinect2;
 
 
@@ -68,7 +71,6 @@ t_jit_err ta_jit_kinect2_init(void)
 										  (method)NULL, (method)NULL,
 										  calcoffset(t_ta_jit_kinect2, depth_processor));
 	jit_class_addattr(s_ta_jit_kinect2_class, attr);
-    CLASS_ATTR_BASIC(s_ta_jit_kinect2_class,"mode",0);
 
 	// finalize class (REGISTER)
 	jit_class_register(s_ta_jit_kinect2_class);
@@ -87,6 +89,8 @@ t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
     // TA: initialize other data or structs
     if (x) {
 		x->depth_processor = 0; //TA: default depth-processor is CPU
+        x->device = 0; //TA: init device
+        x->pipeline = 0; //TA: init pipeline
 	}
 	return x;
 }
@@ -103,7 +107,11 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 
 //TA: open kinect device
 void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
-    post("hello"); // TA: insert "open" method here
+    post("reaching for Kinect2 device"); // TA: insert "open" method here
+    
+    if (x->freenect2->enumerateDevices() == 0) {
+        post("no device connected!");
+    }
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
