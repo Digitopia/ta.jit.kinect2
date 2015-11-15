@@ -23,7 +23,7 @@
 // Our Jitter object instance data
 typedef struct _ta_jit_kinect2 {
 	t_object	ob;
-    double		gain;	// our attribute (multiplied against each cell in the matrix)
+    long		depth_processor;	// TA: depth_processor attribute -> 0=CPU, 1=OpenGL, 2=OpenCL
 } t_ta_jit_kinect2;
 
 
@@ -62,12 +62,13 @@ t_jit_err ta_jit_kinect2_init(void)
     
 	// add attribute(s)
 	attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
-										  "gain",
-										  _jit_sym_float64,
+										  "depth_processor",
+										  _jit_sym_long,
 										  attrflags,
 										  (method)NULL, (method)NULL,
-										  calcoffset(t_ta_jit_kinect2, gain));
+										  calcoffset(t_ta_jit_kinect2, depth_processor));
 	jit_class_addattr(s_ta_jit_kinect2_class, attr);
+    CLASS_ATTR_BASIC(s_ta_jit_kinect2_class,"mode",0);
 
 	// finalize class (REGISTER)
 	jit_class_register(s_ta_jit_kinect2_class);
@@ -85,7 +86,7 @@ t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
 	x = (t_ta_jit_kinect2 *)jit_object_alloc(s_ta_jit_kinect2_class);
     // TA: initialize other data or structs
     if (x) {
-		x->gain = 0.0;
+		x->depth_processor = 0; //TA: default depth-processor is CPU
 	}
 	return x;
 }
@@ -180,7 +181,7 @@ out:
 template<typename T>
 void ta_jit_kinect2_vector(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in, t_jit_op_info *out)
 {
-	double	gain = x->gain;
+//	double	gain = x->gain;
 	T		*ip;
 	T		*op;
 	long	is,
@@ -198,13 +199,13 @@ void ta_jit_kinect2_vector(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in, t_jit
 		--ip;
 		while (--n) {
 			tmp = *++ip;
-			*++op = tmp * gain;
+//			*++op = tmp * gain;
 		}
 	}
 	else {
 		while (n--) {
 			tmp = *ip;
-			*op = tmp * gain;
+//			*op = tmp * gain;
 			ip += is;
 			op += os;
 		}
@@ -228,11 +229,14 @@ void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, 
 			ta_jit_kinect2_vector<T>(x, n, in_opinfo, out_opinfo);
 		}
 	}
+    
+    
 }
 
 
 void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop)
 {
+    
 	long			i;
 	long			n;
 	char			*ip;
