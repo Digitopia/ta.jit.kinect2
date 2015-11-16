@@ -113,7 +113,9 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     // TA: check for connected devices
     if (freenect2.enumerateDevices() == 0) {
         post("no device connected!");
-    }    
+        return; // TA: exit open() method if no device is connected
+    }
+    post("reaching kinect devices...");
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
