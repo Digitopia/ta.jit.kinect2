@@ -108,7 +108,8 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 //TA: open kinect device
 void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     post("reaching for Kinect2 device"); // TA: insert "open" method here
-    
+
+//TA: this is crashing Max
 //    if (x->freenect2->enumerateDevices() == 0) {
 //        post("no device connected!");
 //    }
