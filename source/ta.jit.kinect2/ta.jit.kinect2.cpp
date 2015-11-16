@@ -17,13 +17,16 @@
 #include <frame_listener_impl.h>
 #include <registration.h>
 #include <packet_pipeline.h>
-#include <logger.h>
+//#include <logger.h>
 
 
 // Our Jitter object instance data
 typedef struct _ta_jit_kinect2 {
 	t_object	ob;
-    double		gain;	// our attribute (multiplied against each cell in the matrix)
+    long		depth_processor;	// TA: depth_processor attribute -> 0=CPU, 1=OpenGL, 2=OpenCL
+    libfreenect2::Freenect2 *freenect2; // TA: declare freenect2 capabilities?
+    libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
+    libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
 } t_ta_jit_kinect2;
 
 
@@ -34,6 +37,7 @@ t_ta_jit_kinect2	*ta_jit_kinect2_new				(void);
 void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
 t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
 void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
+void ta_jit_kinect2_open (t_ta_jit_kinect2 *x); // TA: declare "open" method
 END_USING_C_LINKAGE
 
 
@@ -57,14 +61,15 @@ t_jit_err ta_jit_kinect2_init(void)
 
 	// add method(s)
 	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
+    jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_open, "open", 0);
     
 	// add attribute(s)
 	attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
-										  "gain",
-										  _jit_sym_float64,
+										  "depth_processor",
+										  _jit_sym_long,
 										  attrflags,
 										  (method)NULL, (method)NULL,
-										  calcoffset(t_ta_jit_kinect2, gain));
+										  calcoffset(t_ta_jit_kinect2, depth_processor));
 	jit_class_addattr(s_ta_jit_kinect2_class, attr);
 
 	// finalize class (REGISTER)
@@ -83,7 +88,9 @@ t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
 	x = (t_ta_jit_kinect2 *)jit_object_alloc(s_ta_jit_kinect2_class);
     // TA: initialize other data or structs
     if (x) {
-		x->gain = 0.0;
+		x->depth_processor = 0; //TA: default depth-processor is CPU
+        x->device = 0; //TA: init device
+        x->pipeline = 0; //TA: init pipeline
 	}
 	return x;
 }
@@ -98,6 +105,15 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 /************************************************************************************/
 // Methods bound to input/inlets
 
+//TA: open kinect device
+void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
+    post("reaching for Kinect2 device"); // TA: insert "open" method here
+
+//TA: this is crashing Max
+//    if (x->freenect2->enumerateDevices() == 0) {
+//        post("no device connected!");
+//    }
+}
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
 {
@@ -174,7 +190,7 @@ out:
 template<typename T>
 void ta_jit_kinect2_vector(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in, t_jit_op_info *out)
 {
-	double	gain = x->gain;
+//	double	gain = x->gain;
 	T		*ip;
 	T		*op;
 	long	is,
@@ -192,13 +208,13 @@ void ta_jit_kinect2_vector(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in, t_jit
 		--ip;
 		while (--n) {
 			tmp = *++ip;
-			*++op = tmp * gain;
+//			*++op = tmp * gain;
 		}
 	}
 	else {
 		while (n--) {
 			tmp = *ip;
-			*op = tmp * gain;
+//			*op = tmp * gain;
 			ip += is;
 			op += os;
 		}
@@ -222,11 +238,14 @@ void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, 
 			ta_jit_kinect2_vector<T>(x, n, in_opinfo, out_opinfo);
 		}
 	}
+    
+    
 }
 
 
 void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop)
 {
+    
 	long			i;
 	long			n;
 	char			*ip;
