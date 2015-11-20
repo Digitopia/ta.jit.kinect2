@@ -24,9 +24,10 @@
 typedef struct _ta_jit_kinect2 {
 	t_object	ob;
     long		depth_processor;	// TA: depth_processor attribute -> 0=CPU, 1=OpenGL, 2=OpenCL
-//    libfreenect2::Freenect2 *freenect2; // TA: declare freenect2 capabilities?
-//    libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
-//    libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
+    libfreenect2::Freenect2 *freenect2;
+//    std::string *serial;
+    libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
+    libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
 } t_ta_jit_kinect2;
 
 
@@ -43,7 +44,7 @@ END_USING_C_LINKAGE
 
 // globals TA: GLOBAL CLASS VARIABLE (class information resides here)
 static void *s_ta_jit_kinect2_class = NULL;
-
+//std::string serial; //TA: not needed ?
 
 /************************************************************************************/
 // INIT
@@ -88,9 +89,11 @@ t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
 	x = (t_ta_jit_kinect2 *)jit_object_alloc(s_ta_jit_kinect2_class);
     // TA: initialize other data or structs
     if (x) {
-		x->depth_processor = 0; //TA: default depth-processor is CPU
-//        x->device = 0; //TA: init device
-//        x->pipeline = 0; //TA: init pipeline
+		x->depth_processor = 2; //TA: default depth-processor is OpenCL
+        x->freenect2 = new libfreenect2::Freenect2();
+        x->device = 0; //TA: init device
+        x->pipeline = 0; //TA: init pipeline
+//        serial.assign("005867245247");
 	}
 	return x;
 }
@@ -107,15 +110,30 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 
 //TA: open kinect device
 void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
+    
     post("reaching for Kinect2 device"); // TA: insert "open" method here
-    libfreenect2::Freenect2 freenect2;
+//    libfreenect2::Freenect2 freenect2;
     
     // TA: check for connected devices
-    if (freenect2.enumerateDevices() == 0) {
+    if (x->freenect2->enumerateDevices() == 0) {
         post("no device connected!");
         return; // TA: exit open() method if no device is connected
     }
     post("reaching kinect devices...");
+//    x->serial = x->freenect2->getDefaultDeviceSerialNumber(); //TA: this crashes the application with EXC_BAD_ACCESS i386 GFLT
+    if(!x->pipeline){
+        x->pipeline = new libfreenect2::OpenCLPacketPipeline();
+        post("creating OpenCL packet pipeline");
+    }
+    if(x->pipeline){
+//    x->device = x->freenect2->openDevice(serial, x->pipeline); // TA: this crashes the application with "Undefined symbols for architecture x86_64"
+        x->device = x->freenect2->openDefaultDevice();
+        post("opened default Kinect device");
+    }
+    if(x->device == 0){
+        post("failed to open device...");
+        return;
+    }
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
