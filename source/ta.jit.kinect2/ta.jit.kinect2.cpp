@@ -37,8 +37,9 @@ t_jit_err		ta_jit_kinect2_init				(void);
 t_ta_jit_kinect2	*ta_jit_kinect2_new				(void);
 void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
 t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
-void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
 void ta_jit_kinect2_open (t_ta_jit_kinect2 *x); // TA: declare "open" method
+// TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
+//void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
 END_USING_C_LINKAGE
 
 
@@ -190,10 +191,12 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
 				dim[i] = in_minfo.dim[i];
 			}
 		}
-
-		jit_parallel_ndim_simplecalc2((method)ta_jit_kinect2_calculate_ndim,
-									  x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
-									  0 /* flags1 */, 0 /* flags2 */);
+        
+// TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
+//		jit_parallel_ndim_simplecalc2((method)ta_jit_kinect2_calculate_ndim,
+//									  x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
+//									  0 /* flags1 */, 0 /* flags2 */);
+        
 
 	}
 	else
@@ -204,6 +207,7 @@ out:
 	jit_object_method(in_matrix,_jit_sym_lock,in_savelock);
 	return err;
 }
+
 
 
 // We are using a C++ template to process a vector of the matrix for any of the given types.
@@ -263,7 +267,8 @@ void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, 
     
 }
 
-
+// TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
+/*
 void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop)
 {
     
@@ -312,3 +317,4 @@ void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim
 		}
 	}
 }
+*/
