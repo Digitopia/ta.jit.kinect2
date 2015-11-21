@@ -28,6 +28,12 @@ typedef struct _ta_jit_kinect2 {
 //    std::string *serial;
     libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
     libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
+    
+    libfreenect2::SyncMultiFrameListener listener; //TA: frame listener
+    libfreenect2::FrameMap *frames; // TA: frame map
+    libfreenect2::Frame *undistorted, *registered;
+    libfreenect2::Registration* registration;
+    size_t framecount;
 } t_ta_jit_kinect2;
 
 
@@ -135,6 +141,13 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
         post("failed to open device...");
         return;
     }
+    x->device->setColorFrameListener(&x->listener);
+    x->device->setIrAndDepthFrameListener(&x->listener);
+    x->device->start();
+    
+    x->registration = new libfreenect2::Registration(x->device->getIrCameraParams(), x->device->getColorCameraParams());
+    x->framecount = 0; // TA: restart framecount
+    x->device->stop();
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
