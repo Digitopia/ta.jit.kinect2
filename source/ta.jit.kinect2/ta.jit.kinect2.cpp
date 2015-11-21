@@ -209,7 +209,8 @@ out:
 }
 
 
-
+// TA: there is no need for vector operations in ta.jit.kinect2
+/*
 // We are using a C++ template to process a vector of the matrix for any of the given types.
 // Thus, we don't need to duplicate the code for each datatype.
 template<typename T>
@@ -266,7 +267,8 @@ void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, 
     
     
 }
-
+*/
+ 
 // TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
 /*
 void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop)
