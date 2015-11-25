@@ -22,6 +22,8 @@
 		F1B58F561BF9222500251C6D /* libusb.h in Headers */ = {isa = PBXBuildFile; fileRef = F1B58F551BF9222500251C6D /* libusb.h */; };
 		F1B58F581BF9223100251C6D /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1B58F571BF9223100251C6D /* libusb-1.0.0.dylib */; };
 		F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BC981C062FEA0038CC38 /* libfreenect2.dylib */; };
+		F1D2BC9A1C06302E0038CC38 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1734E951BFF35580074703F /* Carbon.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F1D2BC9B1C0630300038CC38 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1734E931BFF353E0074703F /* IOKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F1D9575B1BF915AA00BEF4DF /* rgb_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */; };
 /* End PBXBuildFile section */
 
@@ -53,9 +55,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22301F4A10D7BC6C00C1989F /* JitterAPI.framework in Frameworks */,
+				F1D2BC9A1C06302E0038CC38 /* Carbon.framework in Frameworks */,
+				F1D2BC9B1C0630300038CC38 /* IOKit.framework in Frameworks */,
 				F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */,
 				F1B58F581BF9223100251C6D /* libusb-1.0.0.dylib in Frameworks */,
-				22301F4A10D7BC6C00C1989F /* JitterAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
