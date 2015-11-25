@@ -30,10 +30,8 @@
 #define PACKET_PIPELINE_H_
 
 #include <libfreenect2/config.h>
-//#include <libfreenect2/depth_packet_processor.h> // TA: xcode wasn't finding it
-#include <depth_packet_processor.h>
-//#include <libfreenect2/rgb_packet_processor.h> // TA: xcode wasn't finding it
-#include <rgb_packet_processor.h>
+#include <libfreenect2/depth_packet_processor.h>
+#include <libfreenect2/rgb_packet_processor.h>
 
 namespace libfreenect2
 {
