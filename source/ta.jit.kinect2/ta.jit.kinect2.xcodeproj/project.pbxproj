@@ -24,6 +24,15 @@
 		F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BC981C062FEA0038CC38 /* libfreenect2.dylib */; };
 		F1D2BC9A1C06302E0038CC38 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1734E951BFF35580074703F /* Carbon.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F1D2BC9B1C0630300038CC38 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1734E931BFF353E0074703F /* IOKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F1D2BCA31C0631980038CC38 /* jconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BC9E1C0631980038CC38 /* jconfig.h */; };
+		F1D2BCA41C0631980038CC38 /* jerror.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BC9F1C0631980038CC38 /* jerror.h */; };
+		F1D2BCA51C0631980038CC38 /* jmorecfg.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BCA01C0631980038CC38 /* jmorecfg.h */; };
+		F1D2BCA61C0631980038CC38 /* jpeglib.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BCA11C0631980038CC38 /* jpeglib.h */; };
+		F1D2BCA71C0631980038CC38 /* turbojpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BCA21C0631980038CC38 /* turbojpeg.h */; };
+		F1D2BCAD1C0631D30038CC38 /* libjpeg.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCA91C0631D30038CC38 /* libjpeg.8.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F1D2BCAE1C0631D30038CC38 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCAA1C0631D30038CC38 /* libjpeg.a */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F1D2BCAF1C0631D30038CC38 /* libturbojpeg.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCAB1C0631D30038CC38 /* libturbojpeg.0.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F1D2BCB01C0631D30038CC38 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCAC1C0631D30038CC38 /* libturbojpeg.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F1D9575B1BF915AA00BEF4DF /* rgb_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +56,15 @@
 		F1B58F551BF9222500251C6D /* libusb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libusb.h; path = "../../../../../../../../../usr/local/Cellar/libusb/1.0.20/include/libusb-1.0/libusb.h"; sourceTree = "<group>"; };
 		F1B58F571BF9223100251C6D /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-1.0.0.dylib"; path = "../../../../../../../../../usr/local/Cellar/libusb/1.0.20/lib/libusb-1.0.0.dylib"; sourceTree = "<group>"; };
 		F1D2BC981C062FEA0038CC38 /* libfreenect2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreenect2.dylib; sourceTree = "<group>"; };
+		F1D2BC9E1C0631980038CC38 /* jconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jconfig.h; sourceTree = "<group>"; };
+		F1D2BC9F1C0631980038CC38 /* jerror.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jerror.h; sourceTree = "<group>"; };
+		F1D2BCA01C0631980038CC38 /* jmorecfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jmorecfg.h; sourceTree = "<group>"; };
+		F1D2BCA11C0631980038CC38 /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jpeglib.h; sourceTree = "<group>"; };
+		F1D2BCA21C0631980038CC38 /* turbojpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = turbojpeg.h; sourceTree = "<group>"; };
+		F1D2BCA91C0631D30038CC38 /* libjpeg.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjpeg.8.dylib; sourceTree = "<group>"; };
+		F1D2BCAA1C0631D30038CC38 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
+		F1D2BCAB1C0631D30038CC38 /* libturbojpeg.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libturbojpeg.0.dylib; sourceTree = "<group>"; };
+		F1D2BCAC1C0631D30038CC38 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libturbojpeg.a; sourceTree = "<group>"; };
 		F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rgb_packet_processor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,7 +75,11 @@
 			files = (
 				22301F4A10D7BC6C00C1989F /* JitterAPI.framework in Frameworks */,
 				F1D2BC9A1C06302E0038CC38 /* Carbon.framework in Frameworks */,
+				F1D2BCAE1C0631D30038CC38 /* libjpeg.a in Frameworks */,
+				F1D2BCAD1C0631D30038CC38 /* libjpeg.8.dylib in Frameworks */,
+				F1D2BCB01C0631D30038CC38 /* libturbojpeg.a in Frameworks */,
 				F1D2BC9B1C0630300038CC38 /* IOKit.framework in Frameworks */,
+				F1D2BCAF1C0631D30038CC38 /* libturbojpeg.0.dylib in Frameworks */,
 				F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */,
 				F1B58F581BF9223100251C6D /* libusb-1.0.0.dylib in Frameworks */,
 			);
@@ -108,6 +130,7 @@
 		F18F6B3C1BF9116600635809 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				F1D2BC9C1C0631640038CC38 /* jpeg-turbo */,
 				F1B58F511BF9220800251C6D /* libusb */,
 				F18F6B3D1BF9116600635809 /* libfreenect2 */,
 			);
@@ -181,6 +204,38 @@
 			name = "libusb-1.0";
 			sourceTree = "<group>";
 		};
+		F1D2BC9C1C0631640038CC38 /* jpeg-turbo */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BCA81C0631C80038CC38 /* lib */,
+				F1D2BC9D1C0631980038CC38 /* include */,
+			);
+			path = "jpeg-turbo";
+			sourceTree = "<group>";
+		};
+		F1D2BC9D1C0631980038CC38 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BC9E1C0631980038CC38 /* jconfig.h */,
+				F1D2BC9F1C0631980038CC38 /* jerror.h */,
+				F1D2BCA01C0631980038CC38 /* jmorecfg.h */,
+				F1D2BCA11C0631980038CC38 /* jpeglib.h */,
+				F1D2BCA21C0631980038CC38 /* turbojpeg.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F1D2BCA81C0631C80038CC38 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BCA91C0631D30038CC38 /* libjpeg.8.dylib */,
+				F1D2BCAA1C0631D30038CC38 /* libjpeg.a */,
+				F1D2BCAB1C0631D30038CC38 /* libturbojpeg.0.dylib */,
+				F1D2BCAC1C0631D30038CC38 /* libturbojpeg.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -191,14 +246,19 @@
 				F18F6B4B1BF911E900635809 /* frame_listener_impl.h in Headers */,
 				F1D9575B1BF915AA00BEF4DF /* rgb_packet_processor.h in Headers */,
 				F16D26C61BF9147600C92442 /* depth_packet_processor.h in Headers */,
+				F1D2BCA71C0631980038CC38 /* turbojpeg.h in Headers */,
+				F1D2BCA31C0631980038CC38 /* jconfig.h in Headers */,
 				F16D26C81BF9154600C92442 /* packet_processor.h in Headers */,
+				F1D2BCA51C0631980038CC38 /* jmorecfg.h in Headers */,
 				F18F6B491BF911D200635809 /* frame_listener.hpp in Headers */,
 				F18F6B461BF911AC00635809 /* config.h in Headers */,
 				F18F6B4F1BF9136A00635809 /* registration.h in Headers */,
+				F1D2BCA61C0631980038CC38 /* jpeglib.h in Headers */,
 				F16D26C41BF9145C00C92442 /* packet_pipeline.h in Headers */,
 				F18F6B471BF911AC00635809 /* export.h in Headers */,
 				F1B58F561BF9222500251C6D /* libusb.h in Headers */,
 				F18F6B431BF9119D00635809 /* libfreenect2.hpp in Headers */,
+				F1D2BCA41C0631980038CC38 /* jerror.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +386,7 @@
 					"$(PROJECT_DIR)/libs/libfreenect2/lib",
 					"$(PROJECT_DIR)/libs",
 					/usr/local/Cellar/libusb/1.0.20/lib,
+					"$(PROJECT_DIR)/libs/jpeg-turbo/lib",
 				);
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cycling74.${PRODUCT_NAME:rfc1034identifier}";
@@ -354,6 +415,7 @@
 					"$(PROJECT_DIR)/libs/libfreenect2/lib",
 					"$(PROJECT_DIR)/libs",
 					/usr/local/Cellar/libusb/1.0.20/lib,
+					"$(PROJECT_DIR)/libs/jpeg-turbo/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
