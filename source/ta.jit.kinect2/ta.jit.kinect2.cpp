@@ -141,6 +141,11 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
         post("failed to open device...");
         return;
     }
+    x->listener = *new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Color | libfreenect2::Frame::Ir | libfreenect2::Frame::Depth);
+    x->frames = new libfreenect2::FrameMap();
+    x->undistorted = new libfreenect2::Frame(512, 424, 4);
+    x->registered = new libfreenect2::Frame(512, 424, 4);
+    
     x->device->setColorFrameListener(&x->listener);
     x->device->setIrAndDepthFrameListener(&x->listener);
     x->device->start();
