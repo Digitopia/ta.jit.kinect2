@@ -13,7 +13,6 @@
 		F16D26C41BF9145C00C92442 /* packet_pipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = F16D26C31BF9145C00C92442 /* packet_pipeline.h */; };
 		F16D26C61BF9147600C92442 /* depth_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F16D26C51BF9147600C92442 /* depth_packet_processor.h */; };
 		F16D26C81BF9154600C92442 /* packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F16D26C71BF9154600C92442 /* packet_processor.h */; };
-		F18F6B411BF9118300635809 /* libfreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F18F6B401BF9118300635809 /* libfreenect2.dylib */; };
 		F18F6B431BF9119D00635809 /* libfreenect2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F18F6B421BF9119D00635809 /* libfreenect2.hpp */; };
 		F18F6B461BF911AC00635809 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = F18F6B441BF911AC00635809 /* config.h */; };
 		F18F6B471BF911AC00635809 /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = F18F6B451BF911AC00635809 /* export.h */; };
@@ -22,6 +21,7 @@
 		F18F6B4F1BF9136A00635809 /* registration.h in Headers */ = {isa = PBXBuildFile; fileRef = F18F6B4E1BF9136A00635809 /* registration.h */; };
 		F1B58F561BF9222500251C6D /* libusb.h in Headers */ = {isa = PBXBuildFile; fileRef = F1B58F551BF9222500251C6D /* libusb.h */; };
 		F1B58F581BF9223100251C6D /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1B58F571BF9223100251C6D /* libusb-1.0.0.dylib */; };
+		F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BC981C062FEA0038CC38 /* libfreenect2.dylib */; };
 		F1D9575B1BF915AA00BEF4DF /* rgb_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */; };
 /* End PBXBuildFile section */
 
@@ -36,7 +36,6 @@
 		F16D26C71BF9154600C92442 /* packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet_processor.h; sourceTree = "<group>"; };
 		F1734E931BFF353E0074703F /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		F1734E951BFF35580074703F /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		F18F6B401BF9118300635809 /* libfreenect2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreenect2.dylib; sourceTree = "<group>"; };
 		F18F6B421BF9119D00635809 /* libfreenect2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = libfreenect2.hpp; sourceTree = "<group>"; };
 		F18F6B441BF911AC00635809 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		F18F6B451BF911AC00635809 /* export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = export.h; sourceTree = "<group>"; };
@@ -45,6 +44,7 @@
 		F18F6B4E1BF9136A00635809 /* registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registration.h; sourceTree = "<group>"; };
 		F1B58F551BF9222500251C6D /* libusb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libusb.h; path = "../../../../../../../../../usr/local/Cellar/libusb/1.0.20/include/libusb-1.0/libusb.h"; sourceTree = "<group>"; };
 		F1B58F571BF9223100251C6D /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-1.0.0.dylib"; path = "../../../../../../../../../usr/local/Cellar/libusb/1.0.20/lib/libusb-1.0.0.dylib"; sourceTree = "<group>"; };
+		F1D2BC981C062FEA0038CC38 /* libfreenect2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreenect2.dylib; sourceTree = "<group>"; };
 		F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rgb_packet_processor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,9 +53,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */,
 				F1B58F581BF9223100251C6D /* libusb-1.0.0.dylib in Frameworks */,
 				22301F4A10D7BC6C00C1989F /* JitterAPI.framework in Frameworks */,
-				F18F6B411BF9118300635809 /* libfreenect2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,7 +139,7 @@
 		F18F6B3F1BF9116600635809 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				F18F6B401BF9118300635809 /* libfreenect2.dylib */,
+				F1D2BC981C062FEA0038CC38 /* libfreenect2.dylib */,
 			);
 			path = lib;
 			sourceTree = "<group>";
