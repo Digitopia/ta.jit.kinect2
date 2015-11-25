@@ -147,7 +147,7 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     
     x->registration = new libfreenect2::Registration(x->device->getIrCameraParams(), x->device->getColorCameraParams());
     x->framecount = 0; // TA: restart framecount
-    x->device->stop();
+//    x->device->stop();
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
