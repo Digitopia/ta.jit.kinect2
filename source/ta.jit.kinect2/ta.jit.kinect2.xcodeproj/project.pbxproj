@@ -33,6 +33,9 @@
 		F1D2BCAE1C0631D30038CC38 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCAA1C0631D30038CC38 /* libjpeg.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F1D2BCAF1C0631D30038CC38 /* libturbojpeg.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCAB1C0631D30038CC38 /* libturbojpeg.0.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F1D2BCB01C0631D30038CC38 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCAC1C0631D30038CC38 /* libturbojpeg.a */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F1D2BCB81C06328A0038CC38 /* glfw3.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BCB61C06328A0038CC38 /* glfw3.h */; };
+		F1D2BCB91C06328A0038CC38 /* glfw3native.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BCB71C06328A0038CC38 /* glfw3native.h */; };
+		F1D2BCBB1C06329E0038CC38 /* libglfw3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCBA1C06329E0038CC38 /* libglfw3.3.1.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F1D9575B1BF915AA00BEF4DF /* rgb_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +68,9 @@
 		F1D2BCAA1C0631D30038CC38 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		F1D2BCAB1C0631D30038CC38 /* libturbojpeg.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libturbojpeg.0.dylib; sourceTree = "<group>"; };
 		F1D2BCAC1C0631D30038CC38 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libturbojpeg.a; sourceTree = "<group>"; };
+		F1D2BCB61C06328A0038CC38 /* glfw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
+		F1D2BCB71C06328A0038CC38 /* glfw3native.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
+		F1D2BCBA1C06329E0038CC38 /* libglfw3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw3.3.1.dylib; sourceTree = "<group>"; };
 		F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rgb_packet_processor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,13 +81,14 @@
 			files = (
 				22301F4A10D7BC6C00C1989F /* JitterAPI.framework in Frameworks */,
 				F1D2BC9A1C06302E0038CC38 /* Carbon.framework in Frameworks */,
+				F1D2BC9B1C0630300038CC38 /* IOKit.framework in Frameworks */,
+				F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */,
+				F1B58F581BF9223100251C6D /* libusb-1.0.0.dylib in Frameworks */,
 				F1D2BCAE1C0631D30038CC38 /* libjpeg.a in Frameworks */,
 				F1D2BCAD1C0631D30038CC38 /* libjpeg.8.dylib in Frameworks */,
 				F1D2BCB01C0631D30038CC38 /* libturbojpeg.a in Frameworks */,
-				F1D2BC9B1C0630300038CC38 /* IOKit.framework in Frameworks */,
 				F1D2BCAF1C0631D30038CC38 /* libturbojpeg.0.dylib in Frameworks */,
-				F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */,
-				F1B58F581BF9223100251C6D /* libusb-1.0.0.dylib in Frameworks */,
+				F1D2BCBB1C06329E0038CC38 /* libglfw3.3.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +137,7 @@
 		F18F6B3C1BF9116600635809 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				F1D2BCB11C06327B0038CC38 /* glfw3 */,
 				F1D2BC9C1C0631640038CC38 /* jpeg-turbo */,
 				F1B58F511BF9220800251C6D /* libusb */,
 				F18F6B3D1BF9116600635809 /* libfreenect2 */,
@@ -236,6 +244,48 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
+		F1D2BCB11C06327B0038CC38 /* glfw3 */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BCB21C06327B0038CC38 /* 3.1.2 */,
+			);
+			path = glfw3;
+			sourceTree = "<group>";
+		};
+		F1D2BCB21C06327B0038CC38 /* 3.1.2 */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BCB31C06327B0038CC38 /* include */,
+				F1D2BCB41C06327B0038CC38 /* lib */,
+			);
+			path = 3.1.2;
+			sourceTree = "<group>";
+		};
+		F1D2BCB31C06327B0038CC38 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BCB51C06328A0038CC38 /* GLFW */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F1D2BCB41C06327B0038CC38 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BCBA1C06329E0038CC38 /* libglfw3.3.1.dylib */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		F1D2BCB51C06328A0038CC38 /* GLFW */ = {
+			isa = PBXGroup;
+			children = (
+				F1D2BCB61C06328A0038CC38 /* glfw3.h */,
+				F1D2BCB71C06328A0038CC38 /* glfw3native.h */,
+			);
+			path = GLFW;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -243,6 +293,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1D2BCB81C06328A0038CC38 /* glfw3.h in Headers */,
+				F1D2BCB91C06328A0038CC38 /* glfw3native.h in Headers */,
 				F18F6B4B1BF911E900635809 /* frame_listener_impl.h in Headers */,
 				F1D9575B1BF915AA00BEF4DF /* rgb_packet_processor.h in Headers */,
 				F16D26C61BF9147600C92442 /* depth_packet_processor.h in Headers */,
@@ -387,6 +439,7 @@
 					"$(PROJECT_DIR)/libs",
 					/usr/local/Cellar/libusb/1.0.20/lib,
 					"$(PROJECT_DIR)/libs/jpeg-turbo/lib",
+					"$(PROJECT_DIR)/libs/glfw3/3.1.2/lib",
 				);
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cycling74.${PRODUCT_NAME:rfc1034identifier}";
@@ -416,6 +469,7 @@
 					"$(PROJECT_DIR)/libs",
 					/usr/local/Cellar/libusb/1.0.20/lib,
 					"$(PROJECT_DIR)/libs/jpeg-turbo/lib",
+					"$(PROJECT_DIR)/libs/glfw3/3.1.2/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(C74_SYM_LINKER_FLAGS)";
