@@ -36,6 +36,7 @@
 		F1D2BCB81C06328A0038CC38 /* glfw3.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BCB61C06328A0038CC38 /* glfw3.h */; };
 		F1D2BCB91C06328A0038CC38 /* glfw3native.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D2BCB71C06328A0038CC38 /* glfw3native.h */; };
 		F1D2BCBB1C06329E0038CC38 /* libglfw3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCBA1C06329E0038CC38 /* libglfw3.3.1.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F1D2BCBD1C0632FB0038CC38 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D2BCBC1C0632FB0038CC38 /* OpenGL.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F1D9575B1BF915AA00BEF4DF /* rgb_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		F1D2BCB61C06328A0038CC38 /* glfw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
 		F1D2BCB71C06328A0038CC38 /* glfw3native.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
 		F1D2BCBA1C06329E0038CC38 /* libglfw3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw3.3.1.dylib; sourceTree = "<group>"; };
+		F1D2BCBC1C0632FB0038CC38 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		F1D9575A1BF915AA00BEF4DF /* rgb_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rgb_packet_processor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +82,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22301F4A10D7BC6C00C1989F /* JitterAPI.framework in Frameworks */,
+				F1D2BCBD1C0632FB0038CC38 /* OpenGL.framework in Frameworks */,
 				F1D2BC9A1C06302E0038CC38 /* Carbon.framework in Frameworks */,
 				F1D2BC9B1C0630300038CC38 /* IOKit.framework in Frameworks */,
 				F1D2BC991C062FEA0038CC38 /* libfreenect2.dylib in Frameworks */,
@@ -98,6 +101,7 @@
 		089C166AFE841209C02AAC07 /* iterator */ = {
 			isa = PBXGroup;
 			children = (
+				F1D2BCBC1C0632FB0038CC38 /* OpenGL.framework */,
 				22CF10220EE984600054F513 /* maxmspsdk.xcconfig */,
 				F18F6B3C1BF9116600635809 /* libs */,
 				08FB77ADFE841716C02AAC07 /* Source */,
