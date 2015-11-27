@@ -46,7 +46,7 @@ void ext_main(void *r)
 	max_jit_class_obex_setup(max_class, calcoffset(t_max_ta_jit_kinect2, obex));
 
 	jit_class = jit_class_findbyname(gensym("ta_jit_kinect2"));
-	max_jit_class_mop_wrap(max_class, jit_class, 0);			// attrs & methods for name, type, dim, planecount, bang, outputmatrix, etc
+	max_jit_class_mop_wrap(max_class, jit_class, MAX_JIT_MOP_FLAGS_OWN_JIT_MATRIX);			// attrs & methods for name, type, dim, planecount, bang, outputmatrix, etc
 	max_jit_class_wrap_standard(max_class, jit_class, 0);		// attrs & methods for getattributes, dumpout, maxjitclassaddmethods, etc
 
 	class_addmethod(max_class, (method)max_ta_jit_kinect2_assist, "assist", A_CANT, 0);	// TA: assist method
