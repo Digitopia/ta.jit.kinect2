@@ -176,8 +176,8 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
     
     // TA: get the first and second index output from
     // the corresponding output lists
-	rgb_matrix 	= jit_object_method(outputs,_jit_sym_getindex,1);
-	depth_matrix 	= jit_object_method(outputs,_jit_sym_getindex,2);
+	rgb_matrix 	= jit_object_method(outputs,_jit_sym_getindex,0);
+	depth_matrix 	= jit_object_method(outputs,_jit_sym_getindex,1);
     
     // TA:  if the object and both output matrices
     // are valid, then process, else return an error
