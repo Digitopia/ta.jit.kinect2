@@ -46,19 +46,17 @@ void ext_main(void *r)
 	max_jit_class_obex_setup(max_class, calcoffset(t_max_ta_jit_kinect2, obex));
 
 	jit_class = jit_class_findbyname(gensym("ta_jit_kinect2"));
-	max_jit_class_mop_wrap(max_class, jit_class, MAX_JIT_MOP_FLAGS_OWN_JIT_MATRIX | MAX_JIT_MOP_FLAGS_OWN_OUTPUTMATRIX | MAX_JIT_MOP_FLAGS_OWN_BANG);			// attrs & methods for name, type, dim, planecount, bang, outputmatrix, etc
+	max_jit_class_mop_wrap(max_class, jit_class, MAX_JIT_MOP_FLAGS_OWN_JIT_MATRIX | MAX_JIT_MOP_FLAGS_OWN_OUTPUTMATRIX | MAX_JIT_MOP_FLAGS_OWN_BANG // TA: override methods
+                           | MAX_JIT_MOP_FLAGS_OWN_TYPE | MAX_JIT_MOP_FLAGS_OWN_DIM | MAX_JIT_MOP_FLAGS_OWN_PLANECOUNT | MAX_JIT_MOP_FLAGS_OWN_ADAPT | MAX_JIT_MOP_FLAGS_OWN_OUTPUTMODE ); //TA: override attributes
 	max_jit_class_wrap_standard(max_class, jit_class, 0);		// attrs & methods for getattributes, dumpout, maxjitclassaddmethods, etc
 
 	class_addmethod(max_class, (method)max_ta_jit_kinect2_assist, "assist", A_CANT, 0);	// TA: assist method
+    class_addmethod(max_class, (method)max_ta_jit_kinect2_bang, "bang",  0); // TA: add bang method
+    
     // TA: outputmatrix - new style implementation (this is crashing on my machine w/ EXC_BAD_ACCESS)
 //    class_addmethod(max_class, (method)max_ta_jit_kinect2_outputmatrix, A_USURP_LOW, 0);
     // TA: outputmatrix - old style implementation
     max_addmethod_usurp_low((method)max_ta_jit_kinect2_outputmatrix, "outputmatrix");
-    
-    
-    
-    class_addmethod(max_class, (method)max_ta_jit_kinect2_bang, "bang",  0); // TA: add bang method
-    
 
 	class_register(CLASS_BOX, max_class);
 	max_ta_jit_kinect2_class = max_class;
