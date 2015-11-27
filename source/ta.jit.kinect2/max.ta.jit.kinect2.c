@@ -126,7 +126,21 @@ void max_ta_jit_kinect2_assist(t_max_ta_jit_kinect2 *x, void *b, long msg, long 
 
 void max_ta_jit_kinect2_outputmatrix(t_max_ta_jit_kinect2 *x){
     post("hello matrix");
-    //TA: copied from jit.noise SDK example
+    void *mop=max_jit_obex_adornment_get(x,_jit_sym_jit_mop);
+    t_jit_err err;
+    
+    if (mop) { //always output
+        if (err=(t_jit_err)jit_object_method(max_jit_obex_jitob_get(x),
+                                             _jit_sym_matrix_calc,
+                                             jit_object_method(mop,_jit_sym_getinputlist),
+                                             jit_object_method(mop,_jit_sym_getoutputlist)))
+        {
+            jit_error_code(x,err);
+        }
+        else {
+            max_jit_mop_outputmatrix(x);
+        }
+    }
 }
 
 void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x){
