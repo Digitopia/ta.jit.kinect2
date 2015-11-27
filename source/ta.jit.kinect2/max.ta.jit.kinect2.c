@@ -71,7 +71,7 @@ void *max_ta_jit_kinect2_new(t_symbol *s, long argc, t_atom *argv)
 	if (x) {
 		o = jit_object_new(gensym("ta_jit_kinect2"));
 		if (o) {
-			max_jit_mop_setup_simple(x, o, argc, argv);
+			max_jit_mop_setup_simple(x, o, argc, argv); // TA: this way we don't need to explicitly call max_jit_object_dumpout_set(), which is the default dumpout method
 			max_jit_attr_args(x, argc, argv);
             
 		}
