@@ -17,7 +17,7 @@
 // Note: most instance data is in the Jitter object which we will wrap
 typedef struct _max_ta_jit_kinect2 {
 	t_object	ob;
-	void		*obex;
+	void		*obex; //TA: "obex" data is where Jitter stores things like attribute information, the general purpose "dumpout", the internal Jitter object instance, Matrix Operator resources for inlets/outlets, and other auxiliary object information that is not required in a simple Max object
 } t_max_ta_jit_kinect2;
 
 
