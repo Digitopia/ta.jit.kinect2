@@ -64,7 +64,7 @@ t_jit_err ta_jit_kinect2_init(void)
 	s_ta_jit_kinect2_class = jit_class_new("ta_jit_kinect2", (method)ta_jit_kinect2_new, (method)ta_jit_kinect2_free, sizeof(t_ta_jit_kinect2), 0);
 
 	// add matrix operator (mop)
-	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 1, 2); // args are  num inputs and num outputs | TA: added a second outlet, thus having depth, rgb and dumpout outlets
+	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 0, 2); // args are  num inputs and num outputs | TA: added a second outlet, thus having depth, rgb and dumpout outlets
 	jit_class_addadornment(s_ta_jit_kinect2_class, mop);
 
 	// add method(s)
