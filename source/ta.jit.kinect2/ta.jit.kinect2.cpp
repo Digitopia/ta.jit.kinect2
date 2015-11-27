@@ -65,7 +65,7 @@ t_jit_err ta_jit_kinect2_init(void)
 
 	// add matrix operator (mop)
 	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 0, 2); // args are  num inputs and num outputs | TA: added a second outlet, thus having depth, rgb and dumpout outlets
-	jit_class_addadornment(s_ta_jit_kinect2_class, mop);
+    jit_class_addadornment(s_ta_jit_kinect2_class, mop);
 
 	// add method(s)
 	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
@@ -176,8 +176,8 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
     
     // TA: get the first and second index output from
     // the corresponding output lists
-	rgb_matrix 	= jit_object_method(outputs,_jit_sym_getindex,0);
-	depth_matrix 	= jit_object_method(outputs,_jit_sym_getindex,1);
+	rgb_matrix 	= jit_object_method(outputs,_jit_sym_getindex,1);
+	depth_matrix 	= jit_object_method(outputs,_jit_sym_getindex,0);
     
     // TA:  if the object and both output matrices
     // are valid, then process, else return an error
@@ -200,6 +200,18 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
 			err=JIT_ERR_INVALID_OUTPUT;
 			goto out;
         }
+        // TA: set/get matrices type
+        if (rgb_minfo.type != _jit_sym_long){
+            rgb_minfo.type = _jit_sym_long;
+            jit_object_method(rgb_matrix, _jit_sym_setinfo, &rgb_minfo);
+            jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+        }
+        if (depth_minfo.type != _jit_sym_float32){
+            depth_minfo.type = _jit_sym_float32;
+            jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
+            jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        }
+        
         // TA: set/get matrices planecount
         if (rgb_minfo.planecount != 4){
             rgb_minfo.planecount = 4;
