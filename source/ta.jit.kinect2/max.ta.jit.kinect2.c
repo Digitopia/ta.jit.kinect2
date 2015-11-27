@@ -12,7 +12,6 @@
 #include "jit.common.h"
 #include "max.jit.mop.h"
 
-
 // Max object instance data
 // Note: most instance data is in the Jitter object which we will wrap
 typedef struct _max_ta_jit_kinect2 {
@@ -27,7 +26,8 @@ t_jit_err	ta_jit_kinect2_init(void);
 void		*max_ta_jit_kinect2_new(t_symbol *s, long argc, t_atom *argv);
 void		max_ta_jit_kinect2_free(t_max_ta_jit_kinect2 *x);
 void        max_ta_jit_kinect2_assist(t_max_ta_jit_kinect2 *x, void *b, long msg, long arg, char *s); // TA: declare inlet/outlet assist method
-//void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x); // TA: declare bang method
+void        max_ta_jit_kinect2_outputmatrix(t_max_ta_jit_kinect2 *x); // TA: declare outputmatrix() method
+void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x); // TA: declare bang method
 END_USING_C_LINKAGE
 
 // globals
@@ -46,12 +46,18 @@ void ext_main(void *r)
 	max_jit_class_obex_setup(max_class, calcoffset(t_max_ta_jit_kinect2, obex));
 
 	jit_class = jit_class_findbyname(gensym("ta_jit_kinect2"));
-	max_jit_class_mop_wrap(max_class, jit_class, MAX_JIT_MOP_FLAGS_OWN_JIT_MATRIX);			// attrs & methods for name, type, dim, planecount, bang, outputmatrix, etc
+	max_jit_class_mop_wrap(max_class, jit_class, MAX_JIT_MOP_FLAGS_OWN_JIT_MATRIX | MAX_JIT_MOP_FLAGS_OWN_OUTPUTMATRIX | MAX_JIT_MOP_FLAGS_OWN_BANG);			// attrs & methods for name, type, dim, planecount, bang, outputmatrix, etc
 	max_jit_class_wrap_standard(max_class, jit_class, 0);		// attrs & methods for getattributes, dumpout, maxjitclassaddmethods, etc
 
 	class_addmethod(max_class, (method)max_ta_jit_kinect2_assist, "assist", A_CANT, 0);	// TA: assist method
+    // TA: outputmatrix - new style implementation (this is crashing on my machine w/ EXC_BAD_ACCESS)
+//    class_addmethod(max_class, (method)max_ta_jit_kinect2_outputmatrix, A_USURP_LOW, 0);
+    // TA: outputmatrix - old style implementation
+    max_addmethod_usurp_low((method)max_ta_jit_kinect2_outputmatrix, "outputmatrix");
     
-    //    class_addmethod(max_class, (method)max_ta_jit_kinect2_bang, "bang",  0); // TA: add bang method
+    
+    
+    class_addmethod(max_class, (method)max_ta_jit_kinect2_bang, "bang",  0); // TA: add bang method
     
 
 	class_register(CLASS_BOX, max_class);
@@ -92,6 +98,9 @@ void max_ta_jit_kinect2_free(t_max_ta_jit_kinect2 *x)
 	max_jit_object_free(x);
 }
 
+/************************************************************************************/
+// TA: Object Methods
+
 // TA: bang method
 //void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x){
 //    post("hello");
@@ -117,3 +126,12 @@ void max_ta_jit_kinect2_assist(t_max_ta_jit_kinect2 *x, void *b, long msg, long 
     }
 }
 
+void max_ta_jit_kinect2_outputmatrix(t_max_ta_jit_kinect2 *x){
+    post("hello matrix");
+    //TA: copied from jit.noise SDK example
+}
+
+void max_ta_jit_kinect2_bang(t_max_ta_jit_kinect2 *x){
+    post("hello bang");
+    max_ta_jit_kinect2_outputmatrix(x);
+}
