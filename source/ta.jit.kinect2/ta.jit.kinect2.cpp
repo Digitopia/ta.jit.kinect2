@@ -29,16 +29,15 @@
 typedef struct _ta_jit_kinect2 {
 	t_object	ob;
     long		depth_processor;	// TA: depth_processor attribute -> 0=CPU, 1=OpenGL, 2=OpenCL
-    libfreenect2::Freenect2 *freenect2;
+    libfreenect2::Freenect2 freenect2;
 //    std::string *serial;
     libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
     libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
     
-    libfreenect2::SyncMultiFrameListener listener; //TA: frame listener
-    libfreenect2::FrameMap *frames; // TA: frame map
-    libfreenect2::Frame *undistorted, *registered;
-    libfreenect2::Registration* registration;
+    libfreenect2::SyncMultiFrameListener *depth_listener; //TA: depth frame listener
+    libfreenect2::FrameMap *depth_frame; // TA: depth frames
     size_t framecount;
+    t_bool isOpen;
 } t_ta_jit_kinect2;
 
 
@@ -49,6 +48,8 @@ t_ta_jit_kinect2	*ta_jit_kinect2_new				(void);
 void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
 t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
 void ta_jit_kinect2_open (t_ta_jit_kinect2 *x); // TA: declare "open" method
+void depth_callback (t_ta_jit_kinect2 *x); // TA: declare private "depth_callback" method that listens for new depth frames when available
+
 // TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
 //void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
 END_USING_C_LINKAGE
@@ -102,10 +103,11 @@ t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
     // TA: initialize other data or structs
     if (x) {
 		x->depth_processor = 2; //TA: default depth-processor is OpenCL
-        x->freenect2 = new libfreenect2::Freenect2();
+        x->freenect2 = *new libfreenect2::Freenect2();
         x->device = 0; //TA: init device
         x->pipeline = 0; //TA: init pipeline
 //        serial.assign("005867245247");
+        x->isOpen = false;
 	}
 	return x;
 }
@@ -122,42 +124,47 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
 
 //TA: open kinect device
 void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
-    
+    if (x->isOpen == true) {
+        return; // TA: ignore "open" message if a device is already open
+    }
     post("reaching for Kinect2 device"); // TA: insert "open" method here
-//    libfreenect2::Freenect2 freenect2;
     
     // TA: check for connected devices
-    if (x->freenect2->enumerateDevices() == 0) {
+    if (x->freenect2.enumerateDevices() == 0) {
         post("no device connected!");
         return; // TA: exit open() method if no device is connected
     }
+    
     post("reaching kinect devices...");
-//    x->serial = x->freenect2->getDefaultDeviceSerialNumber(); //TA: this crashes the application with EXC_BAD_ACCESS i386 GFLT
     if(!x->pipeline){
         x->pipeline = new libfreenect2::OpenCLPacketPipeline();
         post("creating OpenCL packet pipeline");
     }
     if(x->pipeline){
-//    x->device = x->freenect2->openDevice(serial, x->pipeline); // TA: this crashes the application with "Undefined symbols for architecture x86_64"
-        x->device = x->freenect2->openDefaultDevice();
+        x->device = x->freenect2.openDefaultDevice();
         post("opened default Kinect device");
     }
     if(x->device == 0){
         post("failed to open device...");
         return;
     }
-    x->listener = *new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Color | libfreenect2::Frame::Ir | libfreenect2::Frame::Depth);
-    x->frames = new libfreenect2::FrameMap();
-    x->undistorted = new libfreenect2::Frame(512, 424, 4);
-    x->registered = new libfreenect2::Frame(512, 424, 4);
-    
-    x->device->setColorFrameListener(&x->listener);
-    x->device->setIrAndDepthFrameListener(&x->listener);
+    // TA: start device
+    x->depth_listener = new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Depth);
+    x->device->setIrAndDepthFrameListener(x->depth_listener);
+    x->depth_frame = new libfreenect2::FrameMap[libfreenect2::Frame::Type::Depth];
     x->device->start();
-    
-    x->registration = new libfreenect2::Registration(x->device->getIrCameraParams(), x->device->getColorCameraParams());
-    x->framecount = 0; // TA: restart framecount
-//    x->device->stop();
+    x->framecount = 0; // TA: init framecount
+    x->isOpen = true;
+}
+
+//TA: private depth_callback method
+void depth_callback(t_ta_jit_kinect2 *x){
+    x->depth_listener->waitForNewFrame(*x->depth_frame);
+//    if(x->depth_callback->onNewFrame(libfreenect2::Frame::Type::Depth, x->depth_frame)){
+//        x->framecount++; // TA: I don't think we need this variable!!!!
+//        
+//    }
+    x->depth_listener->release(*x->depth_frame);
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
@@ -275,8 +282,9 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
 //		jit_parallel_ndim_simplecalc2((method)ta_jit_kinect2_calculate_ndim,
 //									  x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
 //									  0 /* flags1 */, 0 /* flags2 */);
-        
-
+        if(x->isOpen){
+            depth_callback(x); // TA: run depth_callback
+        }
 	}
 	else
 		return JIT_ERR_INVALID_PTR;
