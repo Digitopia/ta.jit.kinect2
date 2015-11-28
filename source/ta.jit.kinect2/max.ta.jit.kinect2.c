@@ -47,7 +47,7 @@ void ext_main(void *r)
 
 	jit_class = jit_class_findbyname(gensym("ta_jit_kinect2"));
 	max_jit_class_mop_wrap(max_class, jit_class, MAX_JIT_MOP_FLAGS_OWN_JIT_MATRIX | MAX_JIT_MOP_FLAGS_OWN_OUTPUTMATRIX | MAX_JIT_MOP_FLAGS_OWN_BANG // TA: override methods
-                           | MAX_JIT_MOP_FLAGS_OWN_NAME | MAX_JIT_MOP_FLAGS_OWN_TYPE | MAX_JIT_MOP_FLAGS_OWN_DIM | MAX_JIT_MOP_FLAGS_OWN_PLANECOUNT | MAX_JIT_MOP_FLAGS_OWN_ADAPT | MAX_JIT_MOP_FLAGS_OWN_OUTPUTMODE  ); //TA: override attributes
+                            | MAX_JIT_MOP_FLAGS_OWN_TYPE | MAX_JIT_MOP_FLAGS_OWN_DIM | MAX_JIT_MOP_FLAGS_OWN_PLANECOUNT | MAX_JIT_MOP_FLAGS_OWN_ADAPT | MAX_JIT_MOP_FLAGS_OWN_OUTPUTMODE  ); //TA: override attributes
 	max_jit_class_wrap_standard(max_class, jit_class, 0);		// attrs & methods for getattributes, dumpout, maxjitclassaddmethods, etc
 
 	class_addmethod(max_class, (method)max_ta_jit_kinect2_assist, "assist", A_CANT, 0);	// TA: assist method
