@@ -34,8 +34,7 @@
 
 #include <libfreenect2/config.h>
 #include <libfreenect2/frame_listener.hpp>
-//#include <libfreenect2/packet_processor.h> // TA: xcode wasn't finding it
-#include <packet_processor.h>
+#include <libfreenect2/packet_processor.h>
 
 namespace libfreenect2
 {

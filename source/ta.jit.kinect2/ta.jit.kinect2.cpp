@@ -19,6 +19,11 @@
 #include <packet_pipeline.h>
 //#include <logger.h>
 
+// matrix dimensions
+#define RGB_WIDTH 1920
+#define RGB_HEIGHT 1080
+#define DEPTH_WIDTH 512
+#define DEPTH_HEIGHT 424
 
 // Our Jitter object instance data
 typedef struct _ta_jit_kinect2 {
@@ -28,6 +33,12 @@ typedef struct _ta_jit_kinect2 {
 //    std::string *serial;
     libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
     libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
+    
+    libfreenect2::SyncMultiFrameListener listener; //TA: frame listener
+    libfreenect2::FrameMap *frames; // TA: frame map
+    libfreenect2::Frame *undistorted, *registered;
+    libfreenect2::Registration* registration;
+    size_t framecount;
 } t_ta_jit_kinect2;
 
 
@@ -37,8 +48,9 @@ t_jit_err		ta_jit_kinect2_init				(void);
 t_ta_jit_kinect2	*ta_jit_kinect2_new				(void);
 void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
 t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
-void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
 void ta_jit_kinect2_open (t_ta_jit_kinect2 *x); // TA: declare "open" method
+// TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
+//void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
 END_USING_C_LINKAGE
 
 
@@ -57,8 +69,8 @@ t_jit_err ta_jit_kinect2_init(void)
 	s_ta_jit_kinect2_class = jit_class_new("ta_jit_kinect2", (method)ta_jit_kinect2_new, (method)ta_jit_kinect2_free, sizeof(t_ta_jit_kinect2), 0);
 
 	// add matrix operator (mop)
-	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 1, 2); // args are  num inputs and num outputs | TA: added a second outlet, thus having depth, rgb and dumpout outlets
-	jit_class_addadornment(s_ta_jit_kinect2_class, mop);
+	mop = (t_jit_object *)jit_object_new(_jit_sym_jit_mop, 0, 2); // args are  num inputs and num outputs | TA: added a second outlet, thus having depth, rgb and dumpout outlets
+    jit_class_addadornment(s_ta_jit_kinect2_class, mop);
 
 	// add method(s)
 	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
@@ -134,78 +146,151 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
         post("failed to open device...");
         return;
     }
+    x->listener = *new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Color | libfreenect2::Frame::Ir | libfreenect2::Frame::Depth);
+    x->frames = new libfreenect2::FrameMap();
+    x->undistorted = new libfreenect2::Frame(512, 424, 4);
+    x->registered = new libfreenect2::Frame(512, 424, 4);
+    
+    x->device->setColorFrameListener(&x->listener);
+    x->device->setIrAndDepthFrameListener(&x->listener);
+    x->device->start();
+    
+    x->registration = new libfreenect2::Registration(x->device->getIrCameraParams(), x->device->getColorCameraParams());
+    x->framecount = 0; // TA: restart framecount
+//    x->device->stop();
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
 {
 	t_jit_err			err = JIT_ERR_NONE;
-	long				in_savelock;
-	long				out_savelock;
-	t_jit_matrix_info	in_minfo;
-	t_jit_matrix_info	out_minfo;
-	char				*in_bp;
-	char				*out_bp;
+	long				rgb_savelock;
+	long				depth_savelock;
+	t_jit_matrix_info	rgb_minfo;
+	t_jit_matrix_info	depth_minfo;
+	char				*rgb_bp;
+	char				*depth_bp;
+    //TA: not sure I need this for now
+    /*
 	long				i;
 	long				dimcount;
 	long				planecount;
 	long				dim[JIT_MATRIX_MAX_DIMCOUNT];
-	void				*in_matrix;
-	void				*out_matrix;
-
-	in_matrix 	= jit_object_method(inputs,_jit_sym_getindex,0);
-	out_matrix 	= jit_object_method(outputs,_jit_sym_getindex,0);
-
-	if (x && in_matrix && out_matrix) {
-		in_savelock = (long) jit_object_method(in_matrix, _jit_sym_lock, 1);
-		out_savelock = (long) jit_object_method(out_matrix, _jit_sym_lock, 1);
-
-		jit_object_method(in_matrix, _jit_sym_getinfo, &in_minfo);
-		jit_object_method(out_matrix, _jit_sym_getinfo, &out_minfo);
-
-		jit_object_method(in_matrix, _jit_sym_getdata, &in_bp);
-		jit_object_method(out_matrix, _jit_sym_getdata, &out_bp);
-
-		if (!in_bp) {
+	*/
+    void				*rgb_matrix;
+	void				*depth_matrix;
+    
+    // TA: get the first and second index output from
+    // the corresponding output lists
+	rgb_matrix 	= jit_object_method(outputs,_jit_sym_getindex,1);
+	depth_matrix 	= jit_object_method(outputs,_jit_sym_getindex,0);
+    
+    // TA:  if the object and both output matrices
+    // are valid, then process, else return an error
+	if (x && rgb_matrix && depth_matrix) {
+        // TA: lock rgb and depth matrices to prevent data and attribute changes during matrix operations
+		rgb_savelock = (long) jit_object_method(rgb_matrix, _jit_sym_lock, 1);
+		depth_savelock = (long) jit_object_method(depth_matrix, _jit_sym_lock, 1);
+        // TA: fill out matrix info structs
+		jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+		jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        // TA: get matrix data pointers
+		jit_object_method(rgb_matrix, _jit_sym_getdata, &rgb_bp);
+		jit_object_method(depth_matrix, _jit_sym_getdata, &depth_bp);
+        // TA: if data pointers are invalid, set error, and cleanup
+		if (!rgb_bp) {
 			err=JIT_ERR_INVALID_INPUT;
 			goto out;
 		}
-		if (!out_bp) {
+		if (!depth_bp) {
 			err=JIT_ERR_INVALID_OUTPUT;
 			goto out;
-		}
-		if (in_minfo.type != out_minfo.type) {
-			err = JIT_ERR_MISMATCH_TYPE;
-			goto out;
-		}
-
+        }
+        // TA: set/get matrices type
+        if (rgb_minfo.type != _jit_sym_long){
+            rgb_minfo.type = _jit_sym_long;
+            jit_object_method(rgb_matrix, _jit_sym_setinfo, &rgb_minfo);
+            jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+        }
+        if (depth_minfo.type != _jit_sym_float32){
+            depth_minfo.type = _jit_sym_float32;
+            jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
+            jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        }
+        // TA: set/get matrices dimcount
+        if(rgb_minfo.dimcount!= 2){
+            rgb_minfo.dimcount = 2;
+            jit_object_method(rgb_matrix, _jit_sym_setinfo, &rgb_minfo);
+            jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+        }
+        if (depth_minfo.dimcount != 2) {
+            depth_minfo.dimcount = 2;
+            jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
+            jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        }
+        // TA: set/get matrices dim
+        if (rgb_minfo.dim[0] != RGB_WIDTH || rgb_minfo.dim[1] != RGB_HEIGHT ) {
+            rgb_minfo.dim[0] = RGB_WIDTH;
+            rgb_minfo.dim[1] = RGB_HEIGHT;
+            jit_object_method(rgb_matrix, _jit_sym_setinfo, &rgb_minfo);
+            jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+        }
+        if (depth_minfo.dim[0] != DEPTH_WIDTH || depth_minfo.dim[1] != DEPTH_HEIGHT) {
+            depth_minfo.dim[0] = DEPTH_WIDTH;
+            depth_minfo.dim[1] = DEPTH_HEIGHT;
+            jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
+            jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        }
+        // TA: set/get matrices planecount
+        if (rgb_minfo.planecount != 4){
+            rgb_minfo.planecount = 4;
+            jit_object_method(rgb_matrix, _jit_sym_setinfo, &rgb_minfo);
+            jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+        }
+        if (depth_minfo.planecount != 1){
+            depth_minfo.planecount = 1;
+            jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
+            jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        }
+        
+        //TA: rgb and depth matrices have different types and planecounts
+//		if (in_minfo.type != out_minfo.type) {
+//			err = JIT_ERR_MISMATCH_TYPE;
+//			goto out;
+//		}
 		//get dimensions/planecount
-		dimcount   = out_minfo.dimcount;
-		planecount = out_minfo.planecount;
-
-		for (i=0; i<dimcount; i++) {
-			//if dimsize is 1, treat as infinite domain across that dimension.
-			//otherwise truncate if less than the output dimsize
-			dim[i] = out_minfo.dim[i];
-			if ((in_minfo.dim[i]<dim[i]) && in_minfo.dim[i]>1) {
-				dim[i] = in_minfo.dim[i];
-			}
-		}
-
-		jit_parallel_ndim_simplecalc2((method)ta_jit_kinect2_calculate_ndim,
-									  x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
-									  0 /* flags1 */, 0 /* flags2 */);
+//		dimcount   = out_minfo.dimcount;
+//		planecount = out_minfo.planecount;
+        
+        //// TA: not sure if I need this right now...
+//		for (i=0; i<dimcount; i++) {
+//			//if dimsize is 1, treat as infinite domain across that dimension.
+//			//otherwise truncate if less than the output dimsize
+//			dim[i] = out_minfo.dim[i];
+//			if ((in_minfo.dim[i]<dim[i]) && in_minfo.dim[i]>1) {
+//				dim[i] = in_minfo.dim[i];
+//			}
+//		}
+        
+// TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
+//		jit_parallel_ndim_simplecalc2((method)ta_jit_kinect2_calculate_ndim,
+//									  x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
+//									  0 /* flags1 */, 0 /* flags2 */);
+        
 
 	}
 	else
 		return JIT_ERR_INVALID_PTR;
 
 out:
-	jit_object_method(out_matrix,_jit_sym_lock,out_savelock);
-	jit_object_method(in_matrix,_jit_sym_lock,in_savelock);
+    // TA: unlock rgb and depth matrices
+	jit_object_method(depth_matrix,_jit_sym_lock,depth_savelock);
+	jit_object_method(rgb_matrix,_jit_sym_lock,rgb_savelock);
 	return err;
 }
 
 
+// TA: there is no need for vector operations in ta.jit.kinect2
+/*
 // We are using a C++ template to process a vector of the matrix for any of the given types.
 // Thus, we don't need to duplicate the code for each datatype.
 template<typename T>
@@ -262,8 +347,10 @@ void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, 
     
     
 }
-
-
+*/
+ 
+// TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
+/*
 void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop)
 {
     
@@ -312,3 +399,4 @@ void ta_jit_kinect2_calculate_ndim(t_ta_jit_kinect2 *x, long dimcount, long *dim
 		}
 	}
 }
+*/
