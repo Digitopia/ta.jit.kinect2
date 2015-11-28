@@ -19,6 +19,11 @@
 #include <packet_pipeline.h>
 //#include <logger.h>
 
+// matrix dimensions
+#define RGB_WIDTH 1920
+#define RGB_HEIGHT 1080
+#define DEPTH_WIDTH 512
+#define DEPTH_HEIGHT 424
 
 // Our Jitter object instance data
 typedef struct _ta_jit_kinect2 {
@@ -211,7 +216,30 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
             jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
             jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
         }
-        
+        // TA: set/get matrices dimcount
+        if(rgb_minfo.dimcount!= 2){
+            rgb_minfo.dimcount = 2;
+            jit_object_method(rgb_matrix, _jit_sym_setinfo, &rgb_minfo);
+            jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+        }
+        if (depth_minfo.dimcount != 2) {
+            depth_minfo.dimcount = 2;
+            jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
+            jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        }
+        // TA: set/get matrices dim
+        if (rgb_minfo.dim[0] != RGB_WIDTH || rgb_minfo.dim[1] != RGB_HEIGHT ) {
+            rgb_minfo.dim[0] = RGB_WIDTH;
+            rgb_minfo.dim[1] = RGB_HEIGHT;
+            jit_object_method(rgb_matrix, _jit_sym_setinfo, &rgb_minfo);
+            jit_object_method(rgb_matrix, _jit_sym_getinfo, &rgb_minfo);
+        }
+        if (depth_minfo.dim[0] != DEPTH_WIDTH || depth_minfo.dim[1] != DEPTH_HEIGHT) {
+            depth_minfo.dim[0] = DEPTH_WIDTH;
+            depth_minfo.dim[1] = DEPTH_HEIGHT;
+            jit_object_method(depth_matrix, _jit_sym_setinfo, &depth_minfo);
+            jit_object_method(depth_matrix, _jit_sym_getinfo, &depth_minfo);
+        }
         // TA: set/get matrices planecount
         if (rgb_minfo.planecount != 4){
             rgb_minfo.planecount = 4;
