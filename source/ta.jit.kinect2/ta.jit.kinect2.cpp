@@ -48,6 +48,7 @@ t_ta_jit_kinect2	*ta_jit_kinect2_new				(void);
 void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
 t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
 void ta_jit_kinect2_open (t_ta_jit_kinect2 *x); // TA: declare "open" method
+void ta_jit_kinect2_close (t_ta_jit_kinect2 *x); // TA: declare "close" method
 void depth_callback (t_ta_jit_kinect2 *x); // TA: declare private "depth_callback" method that listens for new depth frames when available
 
 // TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
@@ -76,6 +77,7 @@ t_jit_err ta_jit_kinect2_init(void)
 	// add method(s)
 	jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_matrix_calc, "matrix_calc", A_CANT, 0);
     jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_open, "open", 0);
+    jit_class_addmethod(s_ta_jit_kinect2_class, (method)ta_jit_kinect2_close, "close", 0);
     
 	// add attribute(s)
 	attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
@@ -155,6 +157,21 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     x->device->start();
     x->framecount = 0; // TA: init framecount
     x->isOpen = true;
+}
+//TA: close kinect device
+void ta_jit_kinect2_close(t_ta_jit_kinect2 *x){
+    post("closing...");
+    if (x->isOpen == false) {
+        return; // quit close method if no device is open
+    }
+    x->device->stop();
+    x->device->close();
+    
+    x->depth_listener->release(*x->depth_frame); // TA: just in case...
+    x->depth_listener = NULL;
+    x->device = 0; //TA: init device
+    x->pipeline = 0; //TA: init pipeline
+    x->isOpen = false;
 }
 
 //TA: private depth_callback method
