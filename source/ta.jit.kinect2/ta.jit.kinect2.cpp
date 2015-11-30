@@ -49,7 +49,8 @@ void			ta_jit_kinect2_free				(t_ta_jit_kinect2 *x);
 t_jit_err		ta_jit_kinect2_matrix_calc		(t_ta_jit_kinect2 *x, void *inputs, void *outputs);
 void ta_jit_kinect2_open (t_ta_jit_kinect2 *x); // TA: declare "open" method
 void ta_jit_kinect2_close (t_ta_jit_kinect2 *x); // TA: declare "close" method
-void depth_callback (t_ta_jit_kinect2 *x); // TA: declare private "depth_callback" method that listens for new depth frames when available
+void depth_callback (t_ta_jit_kinect2 *x, char *out_data, t_jit_matrix_info *minfo); // TA: declare private "depth_callback" method that listens for new depth frames when available
+void copy_depth_data (t_ta_jit_kinect2 *x, char *out_data, t_jit_matrix_info *minfo); // TA: declare private "copy_depth_data" method to copy depth data from Kinect to our output depth matrix
 
 // TA: ta.jit.kinect2 doesn't make any ndim calculation (there are no pixels being changed!)
 //void			ta_jit_kinect2_calculate_ndim	(t_ta_jit_kinect2 *x, long dim, long *dimsize, long planecount, t_jit_matrix_info *in_minfo, char *bip, t_jit_matrix_info *out_minfo, char *bop);
@@ -175,13 +176,39 @@ void ta_jit_kinect2_close(t_ta_jit_kinect2 *x){
 }
 
 //TA: private depth_callback method
-void depth_callback(t_ta_jit_kinect2 *x){
+void depth_callback(t_ta_jit_kinect2 *x, char *out_data, t_jit_matrix_info *minfo){
     x->depth_listener->waitForNewFrame(*x->depth_frame);
 //    if(x->depth_callback->onNewFrame(libfreenect2::Frame::Type::Depth, x->depth_frame)){
 //        x->framecount++; // TA: I don't think we need this variable!!!!
 //        
 //    }
+    copy_depth_data(x, out_data, minfo);
+
     x->depth_listener->release(*x->depth_frame);
+}
+
+//TA: private copy_depth_data method
+void copy_depth_data(t_ta_jit_kinect2 *x, char *out_data, t_jit_matrix_info *minfo){
+    
+    std::cout << "dimcount : " << minfo->dimcount << std::endl;
+    std::cout << "dim[0] : " << minfo->dim[0] << std::endl;
+    std::cout << "dim[1] : " << minfo->dim[1] << std::endl;
+    std::cout << "dim stride size : " << sizeof(minfo->dimstride) << std::endl;
+    std::cout << "dim stride 0 (data type in bytes): " << minfo->dimstride[0] << std::endl;
+    std::cout << "dim stride 1 (data type in bytes x dim[0]): " << minfo->dimstride[1] << std::endl;
+
+    libfreenect2::Frame *frame = (*x->depth_frame)[libfreenect2::Frame::Depth];
+    float *frame_data = (float *)frame->data;
+
+    float value;
+    for (int yPos = 0; yPos < DEPTH_HEIGHT; yPos++){
+        for (int xPos = 0; xPos < DEPTH_WIDTH; xPos++){
+            value = frame_data[yPos*DEPTH_WIDTH+xPos];
+            std::cout << "depth value at x="<< xPos << " and y =" << yPos << " : " << value << std::endl;
+
+        }
+    }
+    
 }
 
 t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *outputs)
@@ -191,8 +218,8 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
 	long				depth_savelock;
 	t_jit_matrix_info	rgb_minfo;
 	t_jit_matrix_info	depth_minfo;
-	char				*rgb_bp;
-	char				*depth_bp;
+	char				*rgb_bp; // TA: rgb data pointer
+	char				*depth_bp; // TA: depth data pointer
     //TA: not sure I need this for now
     /*
 	long				i;
@@ -300,7 +327,8 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
 //									  x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
 //									  0 /* flags1 */, 0 /* flags2 */);
         if(x->isOpen){
-            depth_callback(x); // TA: run depth_callback
+            depth_callback(x, depth_bp, &depth_minfo); // TA: run depth_callback
+//            copy_depth_data(x, depth_bp, &depth_minfo);
         }
 	}
 	else
