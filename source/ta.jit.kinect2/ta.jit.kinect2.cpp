@@ -1,13 +1,12 @@
 /**
  @file
- ta.jit.kinect2 - simple example of a Jitter external
- + multiplies an incoming matrix by a constant
- + demonstrates some oft-requested example code for using C++ in an extern
+ ta.jit.kinect2 - reads rgb and depth matrix from Kinect v2
+ using libfreenect2 (https://github.com/OpenKinect/libfreenect2)
  
  @ingroup	examples
+	@see		ta.jit.kinect2
  
- Copyright 2009 - Cycling '74
- Timothy Place, tim@cycling74.com
+	Copyright 2015 - Tiago Ângelo aka p1nh0 (p1nh0.c0d1ng@gmail.com) — Digitópia/Casa da Música
  */
 
 #include "jit.common.h"
