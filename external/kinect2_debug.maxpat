@@ -38,15 +38,12 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-=======
 					"id" : "obj-40",
 					"maxclass" : "jit.pwindow",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 21.0, 699.0, 159.0, 119.25 ],
-					"presentation_rect" : [ 84.0, 758.0, 0.0, 0.0 ]
+					"patching_rect" : [ 21.0, 699.0, 159.0, 119.25 ]
 				}
 
 			}
@@ -91,7 +88,6 @@
 			}
 , 			{
 				"box" : 				{
->>>>>>> master:external/kinect2_debug.maxpat
 					"id" : "obj-38",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -100,13 +96,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 7,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-							"minor" : 0,
-							"revision" : 6,
-=======
 							"minor" : 1,
 							"revision" : 0,
->>>>>>> master:external/kinect2_debug.maxpat
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -313,11 +304,7 @@
  ]
 					}
 ,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 171.5, 288.0, 41.0, 22.0 ],
-=======
 					"patching_rect" : [ 110.5, 226.0, 41.0, 22.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -339,11 +326,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 449.0, 318.0, 24.0, 24.0 ],
-=======
 					"patching_rect" : [ 388.0, 256.0, 24.0, 24.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -355,11 +338,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 449.0, 361.0, 40.5, 22.0 ],
-=======
 					"patching_rect" : [ 388.0, 299.0, 40.5, 22.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : "",
 					"text" : "gate"
 				}
@@ -373,11 +352,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 121.0, 307.0, 24.0, 24.0 ],
-=======
 					"patching_rect" : [ 60.0, 245.0, 24.0, 24.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -389,11 +364,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 121.0, 350.0, 40.5, 22.0 ],
-=======
 					"patching_rect" : [ 60.0, 288.0, 40.5, 22.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : "",
 					"text" : "gate"
 				}
@@ -672,11 +643,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 581.0, 491.0, 66.0, 23.0 ],
-=======
 					"patching_rect" : [ 520.0, 429.0, 66.0, 23.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -690,11 +657,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 512.0, 491.0, 66.0, 23.0 ],
-=======
 					"patching_rect" : [ 451.0, 429.0, 66.0, 23.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -708,11 +671,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 428.0, 491.0, 74.0, 23.0 ],
-=======
 					"patching_rect" : [ 367.0, 429.0, 74.0, 23.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -753,11 +712,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 449.0, 393.0, 91.0, 22.0 ],
-=======
 					"patching_rect" : [ 388.0, 331.0, 91.0, 22.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : "",
 					"text" : "print rgb-matrix"
 				}
@@ -784,11 +739,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 252.0, 488.0, 66.0, 23.0 ],
-=======
 					"patching_rect" : [ 191.0, 426.0, 66.0, 23.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -802,11 +753,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 183.0, 488.0, 66.0, 23.0 ],
-=======
 					"patching_rect" : [ 122.0, 426.0, 66.0, 23.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -820,11 +767,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 99.0, 488.0, 74.0, 23.0 ],
-=======
 					"patching_rect" : [ 38.0, 426.0, 74.0, 23.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : ""
 				}
 
@@ -901,11 +844,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"patching_rect" : [ 428.0, 208.0, 84.0, 22.0 ],
-=======
 					"patching_rect" : [ 367.0, 146.0, 84.0, 22.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"style" : "",
 					"text" : "print dumpout"
 				}
@@ -1242,8 +1181,6 @@
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-=======
 					"destination" : [ "obj-7", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -1271,7 +1208,6 @@
 			}
 , 			{
 				"patchline" : 				{
->>>>>>> master:external/kinect2_debug.maxpat
 					"destination" : [ "obj-2", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -1293,11 +1229,7 @@
 					"destination" : [ "obj-12", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"midpoints" : [ 264.5, 428.5, 409.5, 428.5 ],
-=======
 					"midpoints" : [ 376.5, 366.5, 348.5, 366.5 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"source" : [ "obj-5", 1 ]
 				}
 
@@ -1314,27 +1246,10 @@
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"destination" : [ "obj-25", 0 ],
-					"disabled" : 0,
-					"hidden" : 0,
-					"midpoints" : [ 264.5, 403.0, 437.5, 403.0 ],
-					"source" : [ "obj-5", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
-					"disabled" : 0,
-					"hidden" : 0,
-					"midpoints" : [ 91.5, 305.5, 108.5, 305.5 ],
-=======
 					"destination" : [ "obj-30", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
 					"midpoints" : [ 30.5, 243.5, 47.5, 243.5 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"source" : [ "obj-5", 0 ]
 				}
 
@@ -1344,40 +1259,23 @@
 					"destination" : [ "obj-32", 1 ],
 					"disabled" : 0,
 					"hidden" : 0,
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"midpoints" : [ 264.5, 275.5, 480.0, 275.5 ],
-=======
 					"midpoints" : [ 376.5, 213.5, 419.0, 213.5 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"source" : [ "obj-5", 1 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"destination" : [ "obj-38", 0 ],
-					"disabled" : 0,
-					"hidden" : 0,
-					"midpoints" : [ 91.5, 239.0, 181.0, 239.0 ],
-=======
 					"destination" : [ "obj-37", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
 					"midpoints" : [ 30.5, 346.0, 8.0, 346.0, 8.0, 646.0, 30.5, 646.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"source" : [ "obj-5", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-<<<<<<< HEAD:externals/kinect2_debug.maxpat
-					"destination" : [ "obj-4", 1 ],
-					"disabled" : 0,
-					"hidden" : 0,
-					"midpoints" : [ 91.5, 270.0, 152.0, 270.0 ],
-=======
 					"destination" : [ "obj-38", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -1392,7 +1290,6 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"midpoints" : [ 30.5, 208.0, 91.0, 208.0 ],
->>>>>>> master:external/kinect2_debug.maxpat
 					"source" : [ "obj-5", 0 ]
 				}
 
