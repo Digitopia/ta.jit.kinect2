@@ -29,9 +29,9 @@
 #ifndef PACKET_PIPELINE_H_
 #define PACKET_PIPELINE_H_
 
-#include <libfreenect2/config.h>
-#include <libfreenect2/depth_packet_processor.h>
-#include <libfreenect2/rgb_packet_processor.h>
+#include <config.h>
+#include <depth_packet_processor.h>
+#include <rgb_packet_processor.h>
 
 namespace libfreenect2
 {

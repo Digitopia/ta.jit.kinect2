@@ -45,8 +45,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.mycompany.Kinect2_Debugger.app"
-         FilePath = "/Users/tiago/PinhoRepos/ta.jit.kinect2/debugger/Kinect2_Debugger.app">
+         FilePath = "/Users/tiago/PinhoRepos/MaxExternalDebuggerApp/MaxExternalDebuggerApp.app">
       </PathRunnable>
       <MacroExpansion>
          <BuildableReference
@@ -71,6 +70,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2FBBEAD608F335360078DB84"
+            BuildableName = "ta.jit.kinect2.mxo"
+            BlueprintName = "max-external"
+            ReferencedContainer = "container:ta.jit.kinect2.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Development">
