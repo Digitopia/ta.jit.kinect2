@@ -82,14 +82,21 @@ void *max_ta_jit_kinect2_new(t_symbol *s, long argc, t_atom *argv)
         if (o) {
             max_jit_mop_setup_simple(x, o, argc, argv);
             max_jit_attr_args(x, argc, argv);
-            t_atom_long dim[2] = {DEPTH_WIDTH, DEPTH_HEIGHT};
+            t_atom_long depthdim[2] = {DEPTH_WIDTH, DEPTH_HEIGHT};
+            t_atom_long rgbdim[2] = {RGB_WIDTH, RGB_HEIGHT};
             
-            //TA: set initial attributes
+            //TA: set depth matrix initial attributes
             void *output = max_jit_mop_getoutput(x, 1);
             jit_attr_setsym(output, _jit_sym_type, _jit_sym_float32);
-            jit_attr_setlong_array(output, _jit_sym_dim, 2, dim);
+            jit_attr_setlong_array(output, _jit_sym_dim, 2, depthdim);
             jit_attr_setlong(output, _jit_sym_planecount, 1);
             
+            //TA: set rgb matrix initial attributes
+            output = max_jit_mop_getoutput(x, 2);
+            jit_attr_setsym(output, _jit_sym_type, _jit_sym_float32);
+            jit_attr_setlong_array(output, _jit_sym_dim, 2, rgbdim);
+            jit_attr_setlong(output, _jit_sym_planecount, 4);
+
         }
         else {
             jit_object_error((t_object *)x, "ta.jit.kinect2: could not allocate object");
