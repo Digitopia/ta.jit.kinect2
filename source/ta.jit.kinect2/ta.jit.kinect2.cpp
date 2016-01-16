@@ -218,9 +218,9 @@ void ta_jit_kinect2_close(t_ta_jit_kinect2 *x){
 void ta_jit_kinect2_printDepth(t_ta_jit_kinect2 *x){
     x->listener->waitForNewFrame(*x->frame_map);
     
-//    libfreenect2::Frame *frame = (*x->depth_frame)[libfreenect2::Frame::Depth];
-    x->depth_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
-    float *frame_data = (float *)x->depth_frame->data;
+    libfreenect2::Frame *depth_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
+    depth_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
+    float *frame_data = (float *)depth_frame->data;
     
     float value;
     for (int yPos = 0; yPos < DEPTH_HEIGHT; yPos++){
