@@ -37,8 +37,7 @@ typedef struct _ta_jit_kinect2 {
     libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
     libfreenect2::SyncMultiFrameListener *listener; //TA: depth frame listener
     libfreenect2::FrameMap *frame_map; // TA: frame map (contains all frames: depth, rgb, etc...)
-    libfreenect2::Frame *rgb_frame; // TA: rgb frame
-    libfreenect2::Frame *depth_frame; // TA: depth frame
+//    libfreenect2::Frame *depth_frame; // TA: depth frame
 //    libfreenect2::FrameMap *depth_frame; // TA: depth frames
 //    libfreenect2::FrameMap *rgb_frame;
     t_bool isOpen;
@@ -188,8 +187,8 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     // TA: start device
     x->listener = new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Depth);
     x->device->setIrAndDepthFrameListener(x->listener);
-    x->frame_map = new libfreenect2::FrameMap();
-    //    x->frame_map = new libfreenect2::FrameMap[libfreenect2::Frame::Type::Depth];
+//    x->frame_map = new libfreenect2::FrameMap();
+    x->frame_map = new libfreenect2::FrameMap[libfreenect2::Frame::Type::Depth|libfreenect2::Frame::Type::Color];
     x->device->start();
     
     x->framecount = 0; // TA: init framecount
@@ -278,10 +277,9 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
             //                                          x, dimcount, dim, planecount, &in_minfo, in_bp, &out_minfo, out_bp,
             //                                          0 /* flags1 */, 0 /* flags2 */);
             
+            ta_jit_kinect2_copy_rgbdata(x, rgb_minfo.dimcount, rgb_minfo.dim, rgb_minfo.planecount, &rgb_minfo, rgb_bp);
             ta_jit_kinect2_copy_depthdata(x, depth_minfo.dimcount, depth_minfo.dim, depth_minfo.planecount, &depth_minfo, depth_bp);
-            
-//            ta_jit_kinect2_copy_rgbdata(x, rgb_minfo.dimcount, rgb_minfo.dim, rgb_minfo.planecount, &rgb_minfo, rgb_bp);
-            
+
             
             
             x->listener->release(*x->frame_map);
@@ -307,9 +305,10 @@ void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, 
 {
     long xPos, yPos;
     
-//    libfreenect2::Frame *frame = (*x->depth_frame)[libfreenect2::Frame::Depth];
-    x->depth_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
-    float *frame_data = (float *)x->depth_frame->data;
+    libfreenect2::Frame *depth_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
+    
+//    x->depth_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
+    float *frame_data = (float *)depth_frame->data;
     out_opinfo->p = bop;
     float *op;
     op = (float *)out_opinfo->p;
@@ -324,6 +323,30 @@ void ta_jit_kinect2_loop(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, 
         }
     }
 }
+
+template<typename T>
+void ta_jit_kinect2_looprgb(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinfo, t_jit_op_info *out_opinfo, t_jit_matrix_info *out_minfo, char *bop, long *dim, long planecount, long datasize)
+{
+    long xPos, yPos;
+    
+    libfreenect2::Frame *rgb_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
+    
+    int *frame_data = (int *)rgb_frame->data;
+    out_opinfo->p = bop;
+    float *op;
+    op = (float *)out_opinfo->p;
+    float value;
+    
+    for(yPos = 0; yPos < DEPTH_HEIGHT; yPos++){
+        for(xPos = 0; xPos < DEPTH_WIDTH; xPos++){
+            value = *frame_data;
+            *op = value;
+            op++;
+            frame_data++;
+        }
+    }
+}
+
 /************************************************************************************/
 void ta_jit_kinect2_copy_depthdata(t_ta_jit_kinect2 *x, long dimcount, long *dim, long planecount, t_jit_matrix_info *out_minfo, char *bop)
 {
@@ -411,7 +434,7 @@ void ta_jit_kinect2_copy_rgbdata(t_ta_jit_kinect2 *x, long dimcount, long *dim, 
              }*/
             
             
-//            ta_jit_kinect2_loop<float>(x, n, &in_opinfo, &out_opinfo, out_minfo, bop, dim, planecount, 4);
+            ta_jit_kinect2_looprgb<int>(x, n, &in_opinfo, &out_opinfo, out_minfo, bop, dim, planecount, 4);
             
             /*
              if (in_minfo->type == _jit_sym_char)
