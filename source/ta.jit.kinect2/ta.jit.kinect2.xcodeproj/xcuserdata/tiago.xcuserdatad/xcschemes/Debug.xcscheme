@@ -44,6 +44,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
+         BundleIdentifier = "com.p1nh0.MaxExternalDebuggerApp"
          FilePath = "/Users/tiago/PinhoRepos/MaxExternalDebuggerApp/MaxExternalDebuggerApp.app">
       </PathRunnable>
       <MacroExpansion>
