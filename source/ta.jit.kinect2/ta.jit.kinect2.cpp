@@ -336,32 +336,32 @@ void ta_jit_kinect2_looprgb(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinf
     out_opinfo->p = bop;
     char *op;
     op = (char *)out_opinfo->p;
-//    char value;
+    char *aPos;
     
     for(yPos = 0; yPos < RGB_HEIGHT; yPos++){
         for(xPos = 0; xPos < RGB_WIDTH; xPos++){
+            aPos = frame_data + 3;
             
-            *op = *frame_data;
+            //TA: alpha
+            *op = *aPos;
             op++;
+            aPos--;
             frame_data++;
-            
-            *op = *frame_data;
+            //TA: red
+            *op = *aPos;
             op++;
+            aPos--;
             frame_data++;
-            
-            *op = *frame_data;
+            //TA: green
+            *op = *aPos;
             op++;
+            aPos--;
             frame_data++;
-            
-            *op = *frame_data;
+            //TA: blue
+            *op = *aPos;
             op++;
+            aPos--;
             frame_data++;
-            
-//            
-//                value = *frame_data;
-//                *op = value;
-//                op++;
-//                frame_data++;
         }
     }
 }
