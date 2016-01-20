@@ -93,7 +93,7 @@ void *max_ta_jit_kinect2_new(t_symbol *s, long argc, t_atom *argv)
             
             //TA: set rgb matrix initial attributes
             output = max_jit_mop_getoutput(x, 2);
-            jit_attr_setsym(output, _jit_sym_type, _jit_sym_float32);
+            jit_attr_setsym(output, _jit_sym_type, _jit_sym_char);
             jit_attr_setlong_array(output, _jit_sym_dim, 2, rgbdim);
             jit_attr_setlong(output, _jit_sym_planecount, 4);
 

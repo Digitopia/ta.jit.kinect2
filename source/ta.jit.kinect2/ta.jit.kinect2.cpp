@@ -185,10 +185,11 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     }
     
     // TA: start device
-    x->listener = new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Depth);
+    x->listener = new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Color|libfreenect2::Frame::Depth);
+    x->device->setColorFrameListener(x->listener);
     x->device->setIrAndDepthFrameListener(x->listener);
 //    x->frame_map = new libfreenect2::FrameMap();
-    x->frame_map = new libfreenect2::FrameMap[libfreenect2::Frame::Type::Depth|libfreenect2::Frame::Type::Color];
+    x->frame_map = new libfreenect2::FrameMap[libfreenect2::Frame::Type::Color|libfreenect2::Frame::Type::Depth];
     x->device->start();
     
     x->framecount = 0; // TA: init framecount
@@ -329,20 +330,38 @@ void ta_jit_kinect2_looprgb(t_ta_jit_kinect2 *x, long n, t_jit_op_info *in_opinf
 {
     long xPos, yPos;
     
-    libfreenect2::Frame *rgb_frame = (*x->frame_map)[libfreenect2::Frame::Depth];
+    libfreenect2::Frame *rgb_frame = (*x->frame_map)[libfreenect2::Frame::Color];
     
-    int *frame_data = (int *)rgb_frame->data;
+    char *frame_data = (char *)rgb_frame->data;
     out_opinfo->p = bop;
-    float *op;
-    op = (float *)out_opinfo->p;
-    float value;
+    char *op;
+    op = (char *)out_opinfo->p;
+//    char value;
     
-    for(yPos = 0; yPos < DEPTH_HEIGHT; yPos++){
-        for(xPos = 0; xPos < DEPTH_WIDTH; xPos++){
-            value = *frame_data;
-            *op = value;
+    for(yPos = 0; yPos < RGB_HEIGHT; yPos++){
+        for(xPos = 0; xPos < RGB_WIDTH; xPos++){
+            
+            *op = *frame_data;
             op++;
             frame_data++;
+            
+            *op = *frame_data;
+            op++;
+            frame_data++;
+            
+            *op = *frame_data;
+            op++;
+            frame_data++;
+            
+            *op = *frame_data;
+            op++;
+            frame_data++;
+            
+//            
+//                value = *frame_data;
+//                *op = value;
+//                op++;
+//                frame_data++;
         }
     }
 }
@@ -434,7 +453,7 @@ void ta_jit_kinect2_copy_rgbdata(t_ta_jit_kinect2 *x, long dimcount, long *dim, 
              }*/
             
             
-            ta_jit_kinect2_looprgb<int>(x, n, &in_opinfo, &out_opinfo, out_minfo, bop, dim, planecount, 4);
+            ta_jit_kinect2_looprgb<char>(x, n, &in_opinfo, &out_opinfo, out_minfo, bop, dim, planecount, 4);
             
             /*
              if (in_minfo->type == _jit_sym_char)
