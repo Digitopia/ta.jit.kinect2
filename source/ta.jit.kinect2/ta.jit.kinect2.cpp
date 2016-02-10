@@ -18,7 +18,7 @@
 #include <frame_listener_impl.h>
 #include <registration.h>
 #include <packet_pipeline.h>
-//#include <logger.h>
+#include <logger.h>
 
 // matrix dimensions
 #define RGB_WIDTH 1920
@@ -27,12 +27,19 @@
 #define DEPTH_HEIGHT 424
 
 
+
+
+
 // Our Jitter object instance data
 typedef struct _ta_jit_kinect2 {
     t_object	ob;
     long depth_processor;
+    t_bool rgb_frames;
+    long logging, prevlogging;
     
     libfreenect2::Freenect2 freenect2;
+    libfreenect2::Logger *mLog; // TA: Logger
+    
     libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
     libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
     libfreenect2::SyncMultiFrameListener *listener; //TA: depth frame listener
@@ -86,12 +93,29 @@ t_jit_err ta_jit_kinect2_init(void)
                                           attrflags,
                                           (method)NULL, (method)NULL,
                                           calcoffset(t_ta_jit_kinect2, depth_processor));
+    jit_class_addattr(s_ta_jit_kinect2_class, attr);
     
+    attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
+                                          "rgb_frames",
+                                          _jit_sym_char,
+                                          attrflags,
+                                          (method)NULL, (method)NULL,
+                                          calcoffset(t_ta_jit_kinect2, rgb_frames));
+    jit_class_addattr(s_ta_jit_kinect2_class, attr);
+    
+    attr = (t_jit_object *)jit_object_new(_jit_sym_jit_attr_offset,
+                                          "logging",
+                                          _jit_sym_long,
+                                          attrflags,
+                                          (method)NULL, (method)NULL,
+                                          calcoffset(t_ta_jit_kinect2, logging));
     jit_class_addattr(s_ta_jit_kinect2_class, attr);
     
     // finalize class
     jit_class_register(s_ta_jit_kinect2_class);
     return JIT_ERR_NONE;
+    
+
 }
 
 
@@ -106,7 +130,13 @@ t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
     // TA: initialize other data or structs
     if (x) {
         x->depth_processor = 2; //TA: default depth-processor is OpenCL
+        x->rgb_frames = false; //TA:: default value (no rgb frames)
+        
         x->freenect2 = *new libfreenect2::Freenect2();
+        x->logging = 0; x-> prevlogging = 0;
+        x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::None);
+        libfreenect2::setGlobalLogger(x->mLog);
+        
         x->device = 0; //TA: init device
         x->pipeline = 0; //TA: init pipeline
         x->isOpen = false;
@@ -130,6 +160,7 @@ void ta_jit_kinect2_free(t_ta_jit_kinect2 *x)
     x->frame_map = NULL;
     x->device = NULL;
     x->pipeline = NULL;
+    x->mLog = NULL;
     
 ;
 }
@@ -257,15 +288,40 @@ t_jit_err ta_jit_kinect2_matrix_calc(t_ta_jit_kinect2 *x, void *inputs, void *ou
             err=JIT_ERR_INVALID_OUTPUT;
             goto out;
         }
+    
+        if(x->logging != x->prevlogging){
+            x-> prevlogging = x->logging;
+            switch (x->logging) {
+                case 0:
+                    x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::None);
+                    break;
+                case 1:
+                    x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Error);
+                    break;
+                case 2:
+                    x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Warning);
+                    break;
+                case 3:
+                    x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Info);
+                    break;
+                case 4:
+                    x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Debug);
+                    break;
+                default:
+                    x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::None);
+                    post("Wrong attribute value!!! Values are: 0 - None, 1 - Error, 2 - Warning, 3 - Info, 4 - Debug");
+                    break;
+            }
+            libfreenect2::setGlobalLogger(x->mLog);
+        }
         
         /************************************************************************************/
         if(x->isOpen){
             x->listener->waitForNewFrame(*x->frame_map);
             
-            ta_jit_kinect2_copy_rgbdata(x, rgb_minfo.dimcount, &rgb_minfo, rgb_bp);
-            ta_jit_kinect2_copy_depthdata(x, depth_minfo.dimcount, &depth_minfo, depth_bp);
-
+            if(x->rgb_frames)ta_jit_kinect2_copy_rgbdata(x, rgb_minfo.dimcount, &rgb_minfo, rgb_bp);
             
+            ta_jit_kinect2_copy_depthdata(x, depth_minfo.dimcount, &depth_minfo, depth_bp);
             x->listener->release(*x->frame_map);
         }
         /************************************************************************************/
