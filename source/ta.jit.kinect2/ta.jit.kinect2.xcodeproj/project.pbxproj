@@ -14,13 +14,13 @@
 		F153C0FF1C416AAA00263790 /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = F153C0F21C416AAA00263790 /* export.h */; };
 		F153C1001C416AAA00263790 /* frame_listener.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F153C0F31C416AAA00263790 /* frame_listener.hpp */; };
 		F153C1011C416AAA00263790 /* frame_listener_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F153C0F41C416AAA00263790 /* frame_listener_impl.h */; };
-		F153C1021C416AAA00263790 /* libfreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F153C0F61C416AAA00263790 /* libfreenect2.dylib */; };
 		F153C1031C416AAA00263790 /* libfreenect2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F153C0F71C416AAA00263790 /* libfreenect2.hpp */; };
 		F153C1041C416AAA00263790 /* logger.h in Headers */ = {isa = PBXBuildFile; fileRef = F153C0F81C416AAA00263790 /* logger.h */; };
 		F153C1051C416AAA00263790 /* packet_pipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = F153C0F91C416AAA00263790 /* packet_pipeline.h */; };
 		F153C1061C416AAA00263790 /* packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F153C0FA1C416AAA00263790 /* packet_processor.h */; };
 		F153C1071C416AAA00263790 /* registration.h in Headers */ = {isa = PBXBuildFile; fileRef = F153C0FB1C416AAA00263790 /* registration.h */; };
 		F153C1081C416AAA00263790 /* rgb_packet_processor.h in Headers */ = {isa = PBXBuildFile; fileRef = F153C0FC1C416AAA00263790 /* rgb_packet_processor.h */; };
+		F1DE6AAD1C7E3071008DDB2D /* libfreenect2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F1DE6AAC1C7E3071008DDB2D /* libfreenect2.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,18 +28,18 @@
 		22301F4210D7BC4000C1989F /* max.ta.jit.kinect2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = max.ta.jit.kinect2.c; sourceTree = "<group>"; };
 		22CF10220EE984600054F513 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../../maxmspsdk.xcconfig; sourceTree = SOURCE_ROOT; };
 		2FBBEAE508F335360078DB84 /* ta.jit.kinect2.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ta.jit.kinect2.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
-		F153C0F01C416AAA00263790 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		F153C0F01C416AAA00263790 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../../../../../libfreenect2/build4OpenGL/libfreenect2/config.h; sourceTree = "<group>"; };
 		F153C0F11C416AAA00263790 /* depth_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = depth_packet_processor.h; sourceTree = "<group>"; };
-		F153C0F21C416AAA00263790 /* export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = export.h; sourceTree = "<group>"; };
+		F153C0F21C416AAA00263790 /* export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = export.h; path = ../../../../../libfreenect2/build4OpenGL/libfreenect2/export.h; sourceTree = "<group>"; };
 		F153C0F31C416AAA00263790 /* frame_listener.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = frame_listener.hpp; sourceTree = "<group>"; };
 		F153C0F41C416AAA00263790 /* frame_listener_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_listener_impl.h; sourceTree = "<group>"; };
-		F153C0F61C416AAA00263790 /* libfreenect2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreenect2.dylib; sourceTree = "<group>"; };
 		F153C0F71C416AAA00263790 /* libfreenect2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = libfreenect2.hpp; sourceTree = "<group>"; };
 		F153C0F81C416AAA00263790 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 		F153C0F91C416AAA00263790 /* packet_pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet_pipeline.h; sourceTree = "<group>"; };
 		F153C0FA1C416AAA00263790 /* packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet_processor.h; sourceTree = "<group>"; };
 		F153C0FB1C416AAA00263790 /* registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registration.h; sourceTree = "<group>"; };
 		F153C0FC1C416AAA00263790 /* rgb_packet_processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rgb_packet_processor.h; sourceTree = "<group>"; };
+		F1DE6AAC1C7E3071008DDB2D /* libfreenect2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreenect2.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F153C1021C416AAA00263790 /* libfreenect2.dylib in Frameworks */,
+				F1DE6AAD1C7E3071008DDB2D /* libfreenect2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +104,7 @@
 		F153C0F51C416AAA00263790 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				F153C0F61C416AAA00263790 /* libfreenect2.dylib */,
+				F1DE6AAC1C7E3071008DDB2D /* libfreenect2.dylib */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -245,6 +245,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libfreenect2/lib",
+					"$(PROJECT_DIR)/GLFW/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cycling74.${PRODUCT_NAME:rfc1034identifier}";
 				SDKROOT = macosx;
@@ -261,6 +262,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libfreenect2/lib",
+					"$(PROJECT_DIR)/GLFW/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.cycling74.${PRODUCT_NAME:rfc1034identifier}";
 				SDKROOT = macosx;

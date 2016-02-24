@@ -26,6 +26,9 @@
 #define DEPTH_WIDTH 512
 #define DEPTH_HEIGHT 424
 
+// log type (develpment only)
+#define LOG_TYPE 4 //None = 0, Error = 1, Warning = 2, Info = 3, Debug = 4
+
 
 
 
@@ -39,7 +42,6 @@ typedef struct _ta_jit_kinect2 {
     
     libfreenect2::Freenect2 freenect2;
     libfreenect2::Logger *mLog; // TA: Logger
-    
     libfreenect2::Freenect2Device *device; // TA: declare freenect2 device
     libfreenect2::PacketPipeline *pipeline; // TA: declare packet pipeline
     libfreenect2::SyncMultiFrameListener *listener; //TA: depth frame listener
@@ -134,9 +136,30 @@ t_ta_jit_kinect2 *ta_jit_kinect2_new(void)
         
         x->freenect2 = *new libfreenect2::Freenect2();
         x->logging = 0; x-> prevlogging = 0;
-        x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::None);
-        libfreenect2::setGlobalLogger(x->mLog);
         
+        switch (LOG_TYPE) {
+            case 0:
+                x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::None);
+                break;
+            case 1:
+                x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Error);
+                break;
+            case 2:
+                x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Warning);
+                break;
+            case 3:
+                x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Info);
+                break;
+            case 4:
+                x->mLog = libfreenect2::createConsoleLogger(libfreenect2::Logger::Debug);
+                break;
+                
+            default:
+                break;
+        }
+        
+        
+        libfreenect2::setGlobalLogger(x->mLog);
         x->device = 0; //TA: init device
         x->pipeline = 0; //TA: init pipeline
         x->isOpen = false;
@@ -192,11 +215,9 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
                 break;
                 
             case 1:
-                //                x->pipeline = new libfreenect2::OpenGLPacketPipeline();
+//                x->pipeline = new libfreenect2::OpenGLPacketPipeline();
                 // TA: DAMN!!!!! OpenGL not found!!!!!!
 //                post("using OpenGL packet pipeline...");
-
-                
                 post("OpenGL packet pipeline not available for the moment!!!");
                 break;
                 
@@ -231,7 +252,6 @@ void ta_jit_kinect2_open(t_ta_jit_kinect2 *x){
     x->device->setIrAndDepthFrameListener(x->listener);
     x->frame_map = new libfreenect2::FrameMap[libfreenect2::Frame::Type::Color|libfreenect2::Frame::Type::Depth];
     x->device->start();
-    
     x->isOpen = true;
     
     post("device is ready");
